@@ -1,0 +1,2 @@
+Conta ; Conta de Luz ; Residência ; MEDIA ; 120.00
+Internet ; 4G dados móveis TIM ; Conta de Internet ; MEDIA ; 54.00

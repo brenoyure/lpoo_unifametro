@@ -1,0 +1,3 @@
+222 ; M�rcio ; marcio@unifametro ; 5000
+444 ; Valdemiro ; vald@unifametro.edu.br ; 5000
+492 ; Breno Yuri ; breno@unifametro ; 3500
