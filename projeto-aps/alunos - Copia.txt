@@ -1,4 +1,3 @@
-222 ; Breno Yuri ; breno@unifametro ; 2800.00
+222 ; Breno Yuri ; byure@ ; 5200.00
 444 ; Márcio Marques ; marcio@unifametro ; 4200.00
 468 ; Vald ; vald@unifametro ; 5000.00
-457 ; José Lira ; jose@unifametro ; 1200.00

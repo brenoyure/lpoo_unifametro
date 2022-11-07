@@ -2,7 +2,6 @@ package br.unifametro.teste.Alunos;
 
 import java.util.Scanner;
 
-import br.unifametro.modelo.Aluno;
 import br.unifametro.persistencia.AlunoDao;
 import br.unifametro.services.AlunoService;
 
@@ -14,8 +13,7 @@ public class BuscaAlunoPorId {
 		AlunoService service = new AlunoService(dao);
 		Scanner sc = new Scanner(System.in);
 
-		Aluno aluno = service.getAluno(sc);
-		System.out.println(aluno);
+		service.getAluno(sc).ifPresentOrElse(System.out::println, () -> System.err.println("Aluno não encontrado"));
 
 	}
 

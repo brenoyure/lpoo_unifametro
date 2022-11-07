@@ -1,7 +1,7 @@
 package br.unifametro.services;
 
-import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.Scanner;
 
 import br.unifametro.modelo.Aluno;
@@ -20,50 +20,67 @@ public class AlunoService {
 		alunoDao.salvar(novoAluno);
 	}
 
-	public void editar(Scanner scanner) throws IOException {
-		listar();
-		Aluno dadosAntigos = getAluno(scanner);
-		Aluno dadosNovos = getDadosEdicao(scanner);
-		dadosNovos.setId(dadosAntigos.getId());
-		alunoDao.editar(dadosAntigos, dadosNovos);
+	public void editar(Scanner scanner) {
+		Optional<Aluno> aluno = getAluno(scanner);
+		if (aluno.isEmpty()) {
+			System.err.println("Aluno não encontrado");
+			return;
+		}
+
+		Aluno novosDados = getDadosEdicao(scanner);
+		novosDados.setId(aluno.get().getId());
+
+		alunoDao.editar(aluno.get(), novosDados);
 
 	}
 
-	public Aluno getAluno(Scanner scanner) {
+	public void excluir(Scanner scanner) {
+		getAluno(scanner).ifPresentOrElse(a -> alunoDao.excluir(a), () -> System.err.println("Aluno não encontrado."));
+	}
+
+	public Optional<Aluno> getAluno(Scanner scanner) {
 		System.out.printf("Digite o ID do Aluno: ");
 		Integer id = scanner.nextInt();
 		return alunoDao.findById(id);
 	}
 
-	public Aluno getAlunoPeloNome(Scanner scanner) {
+	public Optional<Aluno> getAlunoPeloNome(Scanner scanner) {
 		System.out.printf("Digite o nome do Aluno: ");
-		String nome = scanner.next();
+		String nome = scanner.nextLine();
 		return alunoDao.findByName(nome);
 	}
 
 	public void listar() {
-		alunoDao.findAll().forEach(a -> System.out.printf("id: %d, %s, %s, R$%s%n", a.getId(), a.getNome(), a.getEmail(), a.getTotalDeRendimentos()));
+		if (alunoDao.findAll().count() == 0) {
+			System.err.println("Nenhum Aluno Cadastrado.");
+			return;
+		}
+
+		alunoDao.findAll().forEach(a -> System.out.printf("id: %d, %s, %s, R$%s%n", a.getId(), a.getNome(),
+				a.getEmail(), a.getTotalDeRendimentos()));
 	}
 
 	private Aluno getDados(Scanner scanner) {
 		System.out.print("\nDigite o ID: ");
-		String idStr = scanner.nextLine();
+		Integer id = scanner.nextInt();
+		scanner.nextLine();
 		System.out.print("Digite o nome do Aluno: ");
 		String nome = scanner.nextLine();
 		System.out.print("\nAgora o email: ");
 		String email = scanner.nextLine();
 		System.out.print("\nPor fim, o total de rendimentos: ");
-		String rendimentos = scanner.nextLine();
+		BigDecimal rendimentos = scanner.nextBigDecimal();
 
-		Integer id = Integer.valueOf(idStr);
-		return new Aluno(id, nome, email, new BigDecimal(rendimentos));
+		return new Aluno(id, nome, email, rendimentos);
 	}
 
 	private Aluno getDadosEdicao(Scanner scanner) {
+		if (scanner.nextLine() != "")
+			scanner.nextLine();
 		System.out.print("\nDigite o nome do Aluno: ");
-		String nome = scanner.next();
+		String nome = scanner.nextLine();
 		System.out.print("\nAgora o email: ");
-		String email = scanner.next();
+		String email = scanner.nextLine();
 		System.out.print("\nPor fim, o total de rendimentos: ");
 		BigDecimal rendimentos = scanner.nextBigDecimal();
 

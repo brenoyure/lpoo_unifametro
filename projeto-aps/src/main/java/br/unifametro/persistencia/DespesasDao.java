@@ -2,13 +2,13 @@ package br.unifametro.persistencia;
 
 import static br.unifametro.modelo.Prioridade.PODE_ESPERAR;
 import static java.lang.System.lineSeparator;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Optional;
@@ -31,7 +31,7 @@ public class DespesasDao {
 
 		try {
 
-			FileWriter fileWriter = new FileWriter(file, true);
+			FileWriter fileWriter = new FileWriter(file, UTF_8,true);
 			fileWriter.write(despesa.toFile() + lineSeparator());
 			fileWriter.flush();
 			fileWriter.close();
@@ -63,7 +63,7 @@ public class DespesasDao {
 
 		Set<Despesa> despesas = new LinkedHashSet<>();
 
-		try (Scanner sc = new Scanner(new File(getFileName()), StandardCharsets.UTF_8)) {
+		try (Scanner sc = new Scanner(new File(getFileName()), UTF_8)) {
 
 			while (sc.hasNext()) {
 
