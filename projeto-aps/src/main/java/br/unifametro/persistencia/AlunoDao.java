@@ -6,7 +6,6 @@ import static java.util.Locale.US;
 import static java.util.stream.Collectors.toList;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -37,17 +36,11 @@ public class AlunoDao {
 
 	public void salvar(Aluno aluno) {
 
-		try {
-
-			FileWriter fileWriter = new FileWriter(file, UTF_8, true);
+		try (FileWriter fileWriter = new FileWriter(file, UTF_8, true)) {
 			fileWriter.write(aluno.toFile() + lineSeparator());
-			fileWriter.flush();
 			fileWriter.close();
 			System.out.printf("Aluno %s cadastrado com sucesso.", aluno.getNome());
 
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			System.err.printf("Arquivo não encontrado.");
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.err.println("Erro de IO.");
@@ -71,33 +64,34 @@ public class AlunoDao {
 
 		Set<Aluno> alunos = new LinkedHashSet<>();
 
-		try (Scanner sc = new Scanner(new File(getFileName()), UTF_8)) {
+		if (file.exists()) {
 
-			while (sc.hasNext()) {
+			try (Scanner sc = new Scanner(file, UTF_8)) {
 
-				String linha = sc.nextLine();
-				try (Scanner scLinha = new Scanner(linha)) {
+				while (sc.hasNext()) {
 
-					scLinha.useDelimiter(" ; ");
-					scLinha.useLocale(US);
+					String linha = sc.nextLine();
+					try (Scanner scLinha = new Scanner(linha)) {
 
-					Integer id = scLinha.nextInt();
-					String nome = scLinha.next();
-					String email = scLinha.next();
-					BigDecimal rend = scLinha.nextBigDecimal();
+						scLinha.useDelimiter(" ; ");
+						scLinha.useLocale(US);
 
-					Aluno a = new Aluno(id, nome, email, rend);
-					alunos.add(a);
+						Integer id = scLinha.nextInt();
+						String nome = scLinha.next();
+						String email = scLinha.next();
+						BigDecimal rend = scLinha.nextBigDecimal();
+
+						Aluno a = new Aluno(id, nome, email, rend);
+						alunos.add(a);
+
+					}
 
 				}
 
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 
-		} catch (FileNotFoundException e) {
-			System.err.println(e.getLocalizedMessage());
-			System.err.println("Tente cadastrar um aluno antes.");
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 
 		return alunos.stream();

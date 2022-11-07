@@ -5,11 +5,13 @@ import static java.lang.System.lineSeparator;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.InputMismatchException;
 import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Scanner;
@@ -25,21 +27,15 @@ import br.unifametro.modelo.Despesa;
  */
 public class DespesasDao {
 
-	private final File file = new File(getFileName());
+	private static final File file = new File(getFileName());
 
 	public void salvar(Despesa despesa) {
 
-		try {
-
-			FileWriter fileWriter = new FileWriter(file, UTF_8,true);
+		try (FileWriter fileWriter = new FileWriter(file, UTF_8, true)) {
 			fileWriter.write(despesa.toFile() + lineSeparator());
-			fileWriter.flush();
 			fileWriter.close();
 			System.out.printf("Despesa %s cadastrada com sucesso.", despesa.getNome());
 
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			System.err.printf("Arquivo não encontrado.");
 		} catch (IOException e) {
 			System.err.println("Erro de IO.");
 			e.printStackTrace();
@@ -63,40 +59,48 @@ public class DespesasDao {
 
 		Set<Despesa> despesas = new LinkedHashSet<>();
 
-		try (Scanner sc = new Scanner(new File(getFileName()), UTF_8)) {
+		if (file.exists()) {
 
-			while (sc.hasNext()) {
+			try (Scanner sc = new Scanner(file, UTF_8)) {
 
-				String linha = sc.nextLine();
-				try (Scanner scLinha = new Scanner(linha)) {
+				while (sc.hasNext()) {
 
-					scLinha.useDelimiter(" ; ");
+					String linha = sc.nextLine();
+					try (Scanner scLinha = new Scanner(linha)) {
 
-					String nome = scLinha.next();
-					String descricao = scLinha.next();
-					String categoria = scLinha.next();
-					String prioridade = scLinha.next();
-					BigDecimal valor = new BigDecimal(scLinha.next());
+						scLinha.useDelimiter(" ; ");
 
-					Despesa d = new Despesa(nome, descricao, categoria, PODE_ESPERAR, valor);
-					despesas.add(d);
+						String nome = scLinha.next();
+						String descricao = scLinha.next();
+						String categoria = scLinha.next();
+						String prioridade = scLinha.next();
+						BigDecimal valor = new BigDecimal(scLinha.next());
 
-				} catch (Exception e) {
-					throw new RuntimeException(e);
+						Despesa d = new Despesa(nome, descricao, categoria, PODE_ESPERAR, valor);
+						despesas.add(d);
+
+					}
+
 				}
 
+			} catch (InputMismatchException e) {
+				System.err.println("Erro ao carregar algum valor, favor verificar o arquivo de persistência.");
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 
-		} catch (Exception e) {
-			throw new RuntimeException(e);
 		}
 
 		return despesas.stream();
 
 	}
-
-	public File getFile() {
-		return this.file;
+	
+	public void excluir(Despesa despesa) {
+		
+		if (!file.exists())
+			return;
+		//TODO implementar o método excluir.
+		
 	}
 
 	/**
@@ -104,7 +108,7 @@ public class DespesasDao {
 	 * 
 	 * @return String nome do arquivo de persistência
 	 */
-	private String getFileName() {
+	private static String getFileName() {
 		String fileName = getFileNameWithCurrentDate();
 		return fileName;
 	}
@@ -115,7 +119,7 @@ public class DespesasDao {
 	 * 
 	 * @return String despesa_Mês_Ano
 	 */
-	private String getFileNameWithCurrentDate() {
+	private static String getFileNameWithCurrentDate() {
 		int mesAtual = LocalDate.now().getMonthValue();
 		int anoAtual = LocalDate.now().getYear();
 

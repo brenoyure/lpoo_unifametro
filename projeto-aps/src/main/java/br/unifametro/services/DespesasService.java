@@ -32,6 +32,10 @@ public class DespesasService {
 				"%s, %s, %s, %s, %s%n", 
 				d.getNome(), d.getCategoria(), d.getDescricao(), d.getPRIORIDADE(), d.getValor()));
 	}
+	
+	public void excluir(Scanner scanner) {
+		
+	}
 
 	private Despesa getDados(Scanner scanner) {
 		System.out.print("Digite o nome da Despesa: ");
@@ -44,9 +48,9 @@ public class DespesasService {
 		String categoria = scanner.nextLine();
 		
 		System.out.print("\nPor fim, o valor da despesa R$: ");
-		String valor = scanner.nextLine();
+		BigDecimal valor = scanner.nextBigDecimal();
 		
-		return new Despesa(nome, descricao, categoria, Prioridade.MEDIA, new BigDecimal(valor));
+		return new Despesa(nome, descricao, categoria, Prioridade.MEDIA, valor);
 	}
 
 }
