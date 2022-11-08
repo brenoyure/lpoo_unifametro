@@ -29,10 +29,11 @@ import br.unifametro.modelo.Despesa;
  * 
  * @see br.unifametro.services.DespesasService
  */
-public class DespesasDao {
+public class DespesasDao implements Dao<Despesa> {
 
 	private final File file = new File(getFileName());
 
+	@Override
 	public void salvar(Despesa despesa) {
 
 		try (FileWriter fileWriter = new FileWriter(file, UTF_8, true)) {
@@ -45,12 +46,6 @@ public class DespesasDao {
 			e.printStackTrace();
 		}
 
-	}
-
-	public Despesa findById(Integer id) {
-		// TODO implementação pendente, ainda preciso modificar a classe de modelo com o
-		// campo Id
-		return null;
 	}
 
 	public Optional<Despesa> findByName(String nome) {
@@ -100,6 +95,7 @@ public class DespesasDao {
 
 	}
 
+	@Override
 	public void editar(Despesa dadosAntigos, Despesa dadosNovos) {
 
 		if (fileExists()) {
@@ -107,7 +103,8 @@ public class DespesasDao {
 			try (Stream<String> stream = Files.lines(getFilePath(), UTF_8)) {
 
 				// Do the line replace
-				List<String> list = stream.map(line -> line.contains(dadosAntigos.toFile()) ? dadosNovos.toFile() : line)
+				List<String> list = stream
+						.map(line -> line.contains(dadosAntigos.toFile()) ? dadosNovos.toFile() : line)
 						.collect(toList());
 
 				// Write the content back
@@ -143,7 +140,8 @@ public class DespesasDao {
 	 * 
 	 * @return String nome do arquivo de persistência
 	 */
-	private String getFileName() {
+	@Override
+	public String getFileName() {
 		String fileName = getFileNameWithCurrentDate();
 		return fileName;
 	}
@@ -162,6 +160,7 @@ public class DespesasDao {
 
 	}
 
+	@Override
 	public boolean fileExists() {
 		return file.exists() && file.length() > 0;
 	}

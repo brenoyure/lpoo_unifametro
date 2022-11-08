@@ -3,7 +3,7 @@ package br.unifametro.modelo;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Despesa {
+public class Despesa implements Model {
 
 	private String nome;
 

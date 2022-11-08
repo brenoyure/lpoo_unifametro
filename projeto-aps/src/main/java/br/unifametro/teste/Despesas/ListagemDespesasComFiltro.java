@@ -15,7 +15,7 @@ public class ListagemDespesasComFiltro {
 		Stream<Despesa> despesas = dao.findAll();
 		
 		BigDecimal valComp = new BigDecimal("120.00");
-		Predicate<Despesa> condicao = d -> d.getValor().compareTo(valComp) == -1;
+		Predicate<Despesa> condicao = d -> d.getValor().compareTo(valComp) == 0;
 		
 		despesas.filter(condicao).findAny().ifPresentOrElse(System.out::println, () -> System.out.println("Nenhuma despesa encontrada."));
 

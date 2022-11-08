@@ -27,7 +27,7 @@ import br.unifametro.modelo.Aluno;
  * 
  * @see br.unifametro.services.AlunoService
  */
-public class AlunoDao {
+public class AlunoDao implements Dao<Aluno> {
 
 	private static File file = new File("alunos.txt");
 
@@ -118,9 +118,10 @@ public class AlunoDao {
 
 	}
 
+	@Override
 	public void excluir(Aluno aluno) {
 
-		try (Stream<String> lines = Files.lines(Paths.get(getFileName()))) {
+		try (Stream<String> lines = Files.lines(getFilePath(), UTF_8)) {
 			List<String> list = lines.filter(l -> !l.equalsIgnoreCase(aluno.toFile())).toList();
 			Files.write(getFilePath(), list, UTF_8);
 		} catch (IOException e) {
@@ -134,8 +135,14 @@ public class AlunoDao {
 	 * 
 	 * @return String nome do arquivo de persistência
 	 */
-	private String getFileName() {
+	@Override
+	public String getFileName() {
 		return file.getName();
+	}
+
+	@Override
+	public boolean fileExists() {
+		return file.exists() && file.length() > 0;
 	}
 
 	private Path getFilePath() {

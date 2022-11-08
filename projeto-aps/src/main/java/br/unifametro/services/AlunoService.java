@@ -7,7 +7,7 @@ import java.util.Scanner;
 import br.unifametro.modelo.Aluno;
 import br.unifametro.persistencia.AlunoDao;
 
-public class AlunoService {
+public class AlunoService implements Service<Aluno> {
 
 	private final AlunoDao alunoDao;
 
@@ -15,13 +15,15 @@ public class AlunoService {
 		this.alunoDao = alunoDao;
 	}
 
+	@Override
 	public void cadastrar(Scanner scanner) {
 		Aluno novoAluno = getDados(scanner);
 		alunoDao.salvar(novoAluno);
 	}
 
+	@Override
 	public void editar(Scanner scanner) {
-		Optional<Aluno> aluno = getAluno(scanner);
+		Optional<Aluno> aluno = get(scanner);
 		if (aluno.isEmpty()) {
 			System.err.println("Aluno não encontrado");
 			return;
@@ -34,24 +36,33 @@ public class AlunoService {
 
 	}
 
+	@Override
 	public void excluir(Scanner scanner) {
-		getAluno(scanner).ifPresentOrElse(a -> alunoDao.excluir(a), () -> System.err.println("Aluno não encontrado."));
+		get(scanner).ifPresentOrElse(a -> alunoDao.excluir(a), () -> System.err.println("Aluno não encontrado."));
 	}
 
-	public Optional<Aluno> getAluno(Scanner scanner) {
+	@Override
+	/**
+	 * Método que recebe um ID, via scanner, e devolve um Optional de Aluno
+	 * 
+	 * @param Scanner scanner
+	 * @return Optional de Aluno
+	 */
+	public Optional<Aluno> get(Scanner scanner) {
 		System.out.printf("Digite o ID do Aluno: ");
 		Integer id = scanner.nextInt();
 		return alunoDao.findById(id);
 	}
 
-	public Optional<Aluno> getAlunoPeloNome(Scanner scanner) {
+	public Optional<Aluno> getByName(Scanner scanner) {
 		System.out.printf("Digite o nome do Aluno: ");
 		String nome = scanner.nextLine();
 		return alunoDao.findByName(nome);
 	}
 
+	@Override
 	public void listar() {
-		if (alunoDao.findAll().count() == 0) {
+		if (fileNotExists()) {
 			System.err.println("Nenhum Aluno Cadastrado.");
 			return;
 		}
@@ -60,7 +71,8 @@ public class AlunoService {
 				a.getEmail(), a.getTotalDeRendimentos()));
 	}
 
-	private Aluno getDados(Scanner scanner) {
+	@Override
+	public Aluno getDados(Scanner scanner) {
 		System.out.print("\nDigite o ID: ");
 		Integer id = scanner.nextInt();
 		scanner.nextLine();
@@ -85,6 +97,12 @@ public class AlunoService {
 		BigDecimal rendimentos = scanner.nextBigDecimal();
 
 		return new Aluno(nome, email, rendimentos);
+	}
+
+	@Override
+	public boolean fileNotExists() {
+		return !alunoDao.fileExists();
+
 	}
 
 }

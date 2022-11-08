@@ -8,7 +8,7 @@ import br.unifametro.modelo.Despesa;
 import br.unifametro.modelo.Prioridade;
 import br.unifametro.persistencia.DespesasDao;
 
-public class DespesasService {
+public class DespesasService implements Service<Despesa> {
 
 	private final DespesasDao despesasDao;
 
@@ -16,52 +16,56 @@ public class DespesasService {
 		this.despesasDao = dao;
 	}
 
+	@Override
 	public void cadastrar(Scanner scanner) {
 		Despesa despesa = getDados(scanner);
 		despesasDao.salvar(despesa);
 	}
 
-	public Optional<Despesa> getByName(Scanner scanner) {
+	@Override
+	public Optional<Despesa> get(Scanner scanner) {
 		System.out.printf("Digite o nome da Despesa: ");
 		String nome = scanner.nextLine();
 		return despesasDao.findByName(nome);
 	}
 
+	@Override
 	public void listar() {
 		if (fileNotExists()) {
 			System.err.println("Nenhuma despesa cadastrada.");
 			return;
 		}
 
-		despesasDao.findAll().forEach(d -> System.out.printf("%s, %s, %s, %s, %s%n", d.getNome(), d.getCategoria(),
-				d.getDescricao(), d.getPRIORIDADE(), d.getValor()));
+		despesasDao.findAll().forEach(System.out::println);
 	}
 
+	@Override
 	public void editar(Scanner scanner) {
 
-		Optional<Despesa> despesa = getByName(scanner);
-
-		if (despesa.isEmpty()) {
-			System.err.println("Nenhuma despesa com o nome informado encontrada.");
+		if (fileNotExists()) {
+			System.err.println("Nenhuma despesa cadastrada.");
 			return;
 		}
 
-		despesasDao.editar(despesa.get(), getDados(scanner));
+		Optional<Despesa> despesa = get(scanner);
+		despesa.ifPresentOrElse(d -> despesasDao.editar(despesa.get(), getDados(scanner)),
+				() -> System.err.println("Nenhuma despesa com o nome informado encontrada."));
 
 	}
 
+	@Override
 	public void excluir(Scanner scanner) {
 		if (fileNotExists()) {
 			System.err.println("Nenhuma despesa cadastrada.");
 			return;
 		}
 
-		getByName(scanner).ifPresentOrElse(d -> despesasDao.excluir(d),
-				() -> System.err.println("Despesa não encontrada."));
+		get(scanner).ifPresentOrElse(d -> despesasDao.excluir(d), () -> System.err.println("Despesa não encontrada."));
 
 	}
 
-	private Despesa getDados(Scanner scanner) {
+	@Override
+	public Despesa getDados(Scanner scanner) {
 		System.out.print("Digite o nome da Despesa: ");
 		String nome = scanner.nextLine();
 
@@ -77,7 +81,8 @@ public class DespesasService {
 		return new Despesa(nome, descricao, categoria, Prioridade.MEDIA, valor);
 	}
 
-	private boolean fileNotExists() {
+	@Override
+	public boolean fileNotExists() {
 		return !despesasDao.fileExists();
 	}
 

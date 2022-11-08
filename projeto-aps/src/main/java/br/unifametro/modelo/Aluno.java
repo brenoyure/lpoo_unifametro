@@ -2,7 +2,7 @@ package br.unifametro.modelo;
 
 import java.math.BigDecimal;
 
-public class Aluno {
+public class Aluno implements Model {
 
 	private Integer id;
 
@@ -18,8 +18,10 @@ public class Aluno {
 	public Aluno() {
 
 	}
+
 	/**
 	 * Construtor sem ID, geralmente usado para editar um aluno.
+	 * 
 	 * @see br.unifametro.services.AlunoService <- Classe AlunoService
 	 * @param nome
 	 * @param email
@@ -54,9 +56,11 @@ public class Aluno {
 	}
 
 	/**
-	 * String utilizada para representar o cadastro do tipo Aluno em um arquivo. 
+	 * String utilizada para representar o cadastro do tipo Aluno em um arquivo.
+	 * 
 	 * @see br.unifametro.services.AlunoService <- Classe AlunoService
-	 * @return representação em String do Aluno para o txt. Como se fosse um JSON ... só que não
+	 * @return representação em String do Aluno para o txt. Como se fosse um JSON
+	 *         ... só que não
 	 */
 	public String toFile() {
 		return String.format("%d ; %s ; %s ; %s", id, nome, email, totalDeRendimentos);

@@ -13,7 +13,7 @@ public class BuscaAlunoPorId {
 		AlunoService service = new AlunoService(dao);
 		Scanner sc = new Scanner(System.in);
 
-		service.getAluno(sc).ifPresentOrElse(System.out::println, () -> System.err.println("Aluno não encontrado"));
+		service.get(sc).ifPresentOrElse(System.out::println, () -> System.err.println("Aluno não encontrado"));
 
 	}
 

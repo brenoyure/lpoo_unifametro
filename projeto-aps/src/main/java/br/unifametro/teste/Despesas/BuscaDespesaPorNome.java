@@ -6,6 +6,7 @@ import java.util.Scanner;
 import br.unifametro.modelo.Despesa;
 import br.unifametro.persistencia.DespesasDao;
 import br.unifametro.services.DespesasService;
+import br.unifametro.services.Service;
 
 public class BuscaDespesaPorNome {
 
@@ -13,9 +14,9 @@ public class BuscaDespesaPorNome {
 
 		Scanner scanner = new Scanner(System.in);
 		DespesasDao dao = new DespesasDao();
-		DespesasService service = new DespesasService(dao);
+		Service<Despesa> service = new DespesasService(dao);
 
-		Optional<Despesa> despesa = service.getByName(scanner);
+		Optional<Despesa> despesa = service.get(scanner);
 
 		despesa.ifPresentOrElse(System.out::println,
 				() -> System.out.println("Nenhuma despesa com o nome informado encontrada."));

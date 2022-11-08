@@ -15,7 +15,7 @@ public class BuscaAlunoPorNome {
 		AlunoService service = new AlunoService(dao);
 		Scanner sc = new Scanner(System.in);
 
-		Optional<Aluno> aluno = service.getAlunoPeloNome(sc);
+		Optional<Aluno> aluno = service.getByName(sc);
 
 		aluno.ifPresentOrElse(System.out::println, () -> System.err.println("Aluno não encontrado."));
 
