@@ -1,6 +1,7 @@
 package br.unifametro.modelo;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class Despesa {
 
@@ -11,7 +12,7 @@ public class Despesa {
 	private String categoria;
 
 	private Prioridade PRIORIDADE;
-	
+
 	private BigDecimal valor;
 
 	public Despesa(String nome, String descricao, String categoria, Prioridade pRIORIDADE, BigDecimal valor) {
@@ -30,6 +31,23 @@ public class Despesa {
 
 	public String toFile() {
 		return String.format("%s ; %s ; %s ; %s ; %s", nome, descricao, categoria, PRIORIDADE, valor);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(nome);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Despesa)) {
+			return false;
+		}
+		Despesa other = (Despesa) obj;
+		return Objects.equals(nome, other.nome);
 	}
 
 	public String getNome() {

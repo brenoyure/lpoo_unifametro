@@ -3,16 +3,20 @@ package br.unifametro.persistencia;
 import static br.unifametro.modelo.Prioridade.PODE_ESPERAR;
 import static java.lang.System.lineSeparator;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Locale.US;
+import static java.util.stream.Collectors.toList;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
@@ -27,7 +31,7 @@ import br.unifametro.modelo.Despesa;
  */
 public class DespesasDao {
 
-	private static final File file = new File(getFileName());
+	private final File file = new File(getFileName());
 
 	public void salvar(Despesa despesa) {
 
@@ -69,12 +73,13 @@ public class DespesasDao {
 					try (Scanner scLinha = new Scanner(linha)) {
 
 						scLinha.useDelimiter(" ; ");
+						scLinha.useLocale(US);
 
 						String nome = scLinha.next();
 						String descricao = scLinha.next();
 						String categoria = scLinha.next();
 						String prioridade = scLinha.next();
-						BigDecimal valor = new BigDecimal(scLinha.next());
+						BigDecimal valor = scLinha.nextBigDecimal();
 
 						Despesa d = new Despesa(nome, descricao, categoria, PODE_ESPERAR, valor);
 						despesas.add(d);
@@ -94,13 +99,43 @@ public class DespesasDao {
 		return despesas.stream();
 
 	}
-	
+
+	public void editar(Despesa dadosAntigos, Despesa dadosNovos) {
+
+		if (fileExists()) {
+
+			try (Stream<String> stream = Files.lines(getFilePath(), UTF_8)) {
+
+				// Do the line replace
+				List<String> list = stream.map(line -> line.contains(dadosAntigos.toFile()) ? dadosNovos.toFile() : line)
+						.collect(toList());
+
+				// Write the content back
+				Files.write(Paths.get(getFileName()), list, UTF_8);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
+
+	}
+
 	public void excluir(Despesa despesa) {
-		
-		if (!file.exists())
-			return;
-		//TODO implementar o método excluir.
-		
+
+		if (fileExists()) {
+
+			try {
+
+				List<String> list = findAll().filter(d -> !d.equals(despesa)).map(Despesa::toFile).toList();
+				Files.write(getFilePath(), list, UTF_8);
+				System.out.printf("Despesa de %s excluída com sucesso.", despesa.getNome());
+
+			} catch (IOException e) {
+				System.err.println(e.getLocalizedMessage());
+			}
+		}
+
 	}
 
 	/**
@@ -108,7 +143,7 @@ public class DespesasDao {
 	 * 
 	 * @return String nome do arquivo de persistência
 	 */
-	private static String getFileName() {
+	private String getFileName() {
 		String fileName = getFileNameWithCurrentDate();
 		return fileName;
 	}
@@ -119,12 +154,20 @@ public class DespesasDao {
 	 * 
 	 * @return String despesa_Mês_Ano
 	 */
-	private static String getFileNameWithCurrentDate() {
+	private String getFileNameWithCurrentDate() {
 		int mesAtual = LocalDate.now().getMonthValue();
 		int anoAtual = LocalDate.now().getYear();
 
 		return String.format("despesas-%d-%d.txt", mesAtual, anoAtual);
 
+	}
+
+	public boolean fileExists() {
+		return file.exists() && file.length() > 0;
+	}
+
+	private Path getFilePath() {
+		return Paths.get(file.getPath());
 	}
 
 }

@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -121,7 +122,7 @@ public class AlunoDao {
 
 		try (Stream<String> lines = Files.lines(Paths.get(getFileName()))) {
 			List<String> list = lines.filter(l -> !l.equalsIgnoreCase(aluno.toFile())).toList();
-			Files.write(Paths.get(getFileName()), list);
+			Files.write(getFilePath(), list, UTF_8);
 		} catch (IOException e) {
 			System.err.println(e.getLocalizedMessage());
 		}
@@ -135,6 +136,10 @@ public class AlunoDao {
 	 */
 	private String getFileName() {
 		return file.getName();
+	}
+
+	private Path getFilePath() {
+		return Paths.get(file.getPath());
 	}
 
 }
