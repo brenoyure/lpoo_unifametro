@@ -53,6 +53,10 @@ public class AlunoService implements Service<Aluno> {
 		Integer id = scanner.nextInt();
 		return alunoDao.findById(id);
 	}
+	
+	public Optional<Aluno> getById(Integer id) {
+		return alunoDao.findById(id);
+	}
 
 	public Optional<Aluno> getByName(Scanner scanner) {
 		System.out.printf("Digite o nome do Aluno: ");

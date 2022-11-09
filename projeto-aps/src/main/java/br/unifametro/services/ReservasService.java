@@ -51,7 +51,12 @@ public class ReservasService implements Service<Reserva> {
 
 	@Override
 	public void listar() {
-		// TODO Auto-generated method stub
+		if (fileNotExists()) {
+			System.err.println("Nenhuma Reserva cadastrada.");
+			return;
+		}
+
+		dao.findAll().forEach(System.out::println);
 
 	}
 

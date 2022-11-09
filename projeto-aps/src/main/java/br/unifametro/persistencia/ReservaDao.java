@@ -1,20 +1,33 @@
 package br.unifametro.persistencia;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Locale.US;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Scanner;
+import java.util.Set;
 import java.util.stream.Stream;
 
+import br.unifametro.modelo.Aluno;
 import br.unifametro.modelo.Reserva;
+import br.unifametro.services.AlunoService;
 
 public class ReservaDao implements Dao<Reserva> {
 
 	private final File file = new File(getFileName());
+	private final AlunoService alunoService;
+
+	public ReservaDao(AlunoService alunoService) {
+		this.alunoService = alunoService;
+	}
 
 	@Override
 	public void salvar(Reserva reserva) {
@@ -43,8 +56,37 @@ public class ReservaDao implements Dao<Reserva> {
 
 	@Override
 	public Stream<Reserva> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		// TODO o nextInt do Scanner está "pulando" o alunoId
+		Set<Reserva> reservas = new LinkedHashSet<>();
+		if (fileExists()) {
+
+			try (BufferedReader br = new BufferedReader(new FileReader(file, UTF_8))) {
+
+				String linha = br.readLine();
+
+				try (Scanner scLinha = new Scanner(linha)) {
+					scLinha.useDelimiter(" ; ");
+					scLinha.useLocale(US);
+					while (linha != null) {
+
+						Integer alunoId = Integer.valueOf(scLinha.next());
+						Aluno aluno = alunoService.getById(alunoId).get();
+
+						reservas.add(new Reserva(aluno));
+
+					}
+
+				}
+
+			} catch (IOException e) {
+				e.printStackTrace();
+				System.err.println("Erro de IO.");
+			}
+
+		}
+
+		return reservas.stream();
+
 	}
 
 	@Override
