@@ -1,16 +1,14 @@
 package br.unifametro.persistencia;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.util.Locale.US;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.InputMismatchException;
 import java.util.LinkedHashSet;
 import java.util.Scanner;
 import java.util.Set;
@@ -56,31 +54,29 @@ public class ReservaDao implements Dao<Reserva> {
 
 	@Override
 	public Stream<Reserva> findAll() {
-		// TODO o nextInt do Scanner está "pulando" o alunoId
+
 		Set<Reserva> reservas = new LinkedHashSet<>();
+
 		if (fileExists()) {
 
-			try (BufferedReader br = new BufferedReader(new FileReader(file, UTF_8))) {
+			try (Scanner sc = new Scanner(file, UTF_8)) {
+				sc.useDelimiter(" ; ");
 
-				String linha = br.readLine();
+				while (sc.hasNext()) {
 
-				try (Scanner scLinha = new Scanner(linha)) {
-					scLinha.useDelimiter(" ; ");
-					scLinha.useLocale(US);
-					while (linha != null) {
+					Aluno aluno = alunoService.getById(sc.nextInt()).get();
+					reservas.add(new Reserva(aluno));
 
-						Integer alunoId = Integer.valueOf(scLinha.next());
-						Aluno aluno = alunoService.getById(alunoId).get();
-
-						reservas.add(new Reserva(aluno));
-
-					}
+					sc.nextLine();
 
 				}
 
+			} catch (InputMismatchException e) {
+				System.err.println(
+						"Possível erro no 1º campo, favor verificar no txt de reservas, se a matrícula de algum aluno está incorreta.");
+
 			} catch (IOException e) {
 				e.printStackTrace();
-				System.err.println("Erro de IO.");
 			}
 
 		}

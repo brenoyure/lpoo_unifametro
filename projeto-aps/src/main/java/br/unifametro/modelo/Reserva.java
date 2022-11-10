@@ -20,6 +20,7 @@ public class Reserva implements Model {
 
 	/**
 	 * Construtor para o cadastro de nova reserva.
+	 * 
 	 * @param aluno
 	 */
 	public Reserva(Aluno aluno) {
@@ -27,20 +28,6 @@ public class Reserva implements Model {
 		this.aluno = aluno;
 		this.totalDeRendimentos = aluno.getTotalDeRendimentos();
 		this.valorDaContribuicao = getValorDaContribuicao();
-	}
-
-	/**
-	 * Construtor para criar um obj Reserva a partir do arquivo de persistência.
-	 * @param alunoId
-	 * @param nomeAluno
-	 * @param totaldRendimentos
-	 * @param valordContribuicao
-	 */
-	public Reserva(Integer alunoId, String nomeAluno, BigDecimal totaldRendimentos, BigDecimal valordContribuicao) {
-		this.alunoId = alunoId;
-		this.aluno.setNome(nomeAluno);
-		this.totalDeRendimentos = totaldRendimentos;
-		this.valorDaContribuicao = valordContribuicao;
 	}
 
 	@Override

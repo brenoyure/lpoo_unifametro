@@ -15,9 +15,8 @@ public class CadastroReserva {
 		AlunoService alunoServices = new AlunoService(new AlunoDao());
 		ReservaDao reservasDao = new ReservaDao(alunoServices);
 		ReservasService service = new ReservasService(reservasDao, alunoServices);
-
 		service.cadastrar(sc);
-		
+
 	}
 
 }
