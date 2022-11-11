@@ -1,4 +1,5 @@
-222 ; Breno Yuri ; breno@unifametro ; 2800.00
+222 ; Breno Yuri ; breno.brito@aluno.unifametro.edu.br ; 2100.00
 444 ; Márcio Marques ; marcio@unifametro ; 4200.00
 468 ; Vald ; vald@unifametro ; 5000.00
 457 ; José Lira ; jose@unifametro ; 1200.00
+466 ; Lucibere Santos ; lucibere@dnocs.gov.br ; 2800.00

@@ -6,13 +6,14 @@ import java.util.Scanner;
 
 import br.unifametro.modelo.Aluno;
 import br.unifametro.persistencia.AlunoDao;
+import br.unifametro.persistencia.Dao;
 
 public class AlunoService implements Service<Aluno> {
 
 	private final AlunoDao alunoDao;
 
-	public AlunoService(AlunoDao alunoDao) {
-		this.alunoDao = alunoDao;
+	public AlunoService(Dao<Aluno> alunoDao) {
+		this.alunoDao = (AlunoDao) alunoDao;
 	}
 
 	@Override

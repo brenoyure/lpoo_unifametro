@@ -12,7 +12,7 @@ public class ReservasService implements Service<Reserva> {
 	private final Dao<Reserva> dao;
 	private final Service<Aluno> alunoService;
 
-	public ReservasService(Dao<Reserva> reservaDao, AlunoService alunoService) {
+	public ReservasService(Dao<Reserva> reservaDao, Service<Aluno> alunoService) {
 		this.dao = reservaDao;
 		this.alunoService = alunoService;
 	}
