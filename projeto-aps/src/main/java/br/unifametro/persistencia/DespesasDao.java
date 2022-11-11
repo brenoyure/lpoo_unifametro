@@ -104,7 +104,7 @@ public class DespesasDao implements Dao<Despesa> {
 
 				// Do the line replace
 				List<String> list = stream
-						.map(line -> line.contains(dadosAntigos.toFile()) ? dadosNovos.toFile() : line)
+						.map(line -> line.startsWith(dadosAntigos.getNome()) ? dadosNovos.toFile() : line)
 						.collect(toList());
 
 				// Write the content back
