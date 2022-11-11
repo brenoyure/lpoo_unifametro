@@ -15,8 +15,6 @@ public interface Service<T> {
 
 	void listar();
 
-	T getDados(Scanner scanner);
-
 	boolean fileNotExists();
 
 }

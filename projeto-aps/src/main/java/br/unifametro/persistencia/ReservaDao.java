@@ -5,13 +5,14 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.stream.Stream;
 
 import br.unifametro.modelo.Aluno;
@@ -49,13 +50,26 @@ public class ReservaDao implements Dao<Reserva> {
 
 	@Override
 	public void excluir(Reserva reserva) {
-		// TODO Auto-generated method stub
+		if (fileExists()) {
+
+			try {
+
+				List<String> list = findAll().filter(r -> !r.equals(reserva)).map(Reserva::toFile).toList();
+
+				Files.write(getFilePath(), list, UTF_8);
+			} catch (IOException e) {
+				e.printStackTrace();
+				System.err.println("Erro ao Ler o arquivo.");
+			}
+
+		}
+
 	}
 
 	@Override
 	public Stream<Reserva> findAll() {
 
-		Set<Reserva> reservas = new LinkedHashSet<>();
+		List<Reserva> reservas = new ArrayList<>();
 
 		if (fileExists()) {
 
@@ -65,7 +79,8 @@ public class ReservaDao implements Dao<Reserva> {
 				while (sc.hasNext()) {
 
 					Aluno aluno = alunoService.getById(sc.nextInt()).get();
-					reservas.add(new Reserva(aluno));
+					Reserva reserva = new Reserva(aluno);
+					reservas.add(reserva);
 
 					sc.nextLine();
 
@@ -73,7 +88,7 @@ public class ReservaDao implements Dao<Reserva> {
 
 			} catch (InputMismatchException e) {
 				System.err.println(
-						"Possível erro no 1º campo, favor verificar no txt de reservas, se a matrícula de algum aluno está incorreta.");
+						"Possível erro nos campos numéricos, favor verificar no txt de reservas, se a matrícula de algum aluno está incorreta.");
 
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -109,7 +124,6 @@ public class ReservaDao implements Dao<Reserva> {
 
 	}
 
-	@SuppressWarnings("unused")
 	private Path getFilePath() {
 		return Paths.get(file.getPath());
 	}

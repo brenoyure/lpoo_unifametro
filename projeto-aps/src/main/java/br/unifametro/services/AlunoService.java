@@ -75,7 +75,6 @@ public class AlunoService implements Service<Aluno> {
 				a.getEmail(), a.getTotalDeRendimentos()));
 	}
 
-	@Override
 	public Aluno getDados(Scanner scanner) {
 		System.out.print("\nDigite o ID: ");
 		Integer id = scanner.nextInt();

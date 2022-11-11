@@ -5,14 +5,14 @@ import java.util.Scanner;
 
 import br.unifametro.modelo.Aluno;
 import br.unifametro.modelo.Reserva;
-import br.unifametro.persistencia.ReservaDao;
+import br.unifametro.persistencia.Dao;
 
 public class ReservasService implements Service<Reserva> {
 
-	private final ReservaDao dao;
-	private final AlunoService alunoService;
+	private final Dao<Reserva> dao;
+	private final Service<Aluno> alunoService;
 
-	public ReservasService(ReservaDao reservaDao, AlunoService alunoService) {
+	public ReservasService(Dao<Reserva> reservaDao, AlunoService alunoService) {
 		this.dao = reservaDao;
 		this.alunoService = alunoService;
 	}
@@ -39,14 +39,20 @@ public class ReservasService implements Service<Reserva> {
 
 	@Override
 	public void excluir(Scanner scanner) {
-		// TODO Auto-generated method stub
+		if (fileNotExists()) {
+			System.err.println("Nenhuma Reserva Cadastrada.");
+			return;
+		}
+		System.out.println("Digite o ID de um aluno para excluir as suas reservas do mês atual.");
+		get(scanner).ifPresentOrElse(r -> dao.excluir(r),
+				() -> System.err.println("Reservas com o ID do Aluno informado não encontradas."));
 
 	}
 
 	@Override
 	public Optional<Reserva> get(Scanner scanner) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+		Integer alunoId = scanner.nextInt();
+		return dao.findAll().filter(r -> r.getAlunoId().equals(alunoId)).findFirst();
 	}
 
 	@Override
@@ -58,12 +64,6 @@ public class ReservasService implements Service<Reserva> {
 
 		dao.findAll().forEach(System.out::println);
 
-	}
-
-	@Override
-	public Reserva getDados(Scanner scanner) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

@@ -64,7 +64,6 @@ public class DespesasService implements Service<Despesa> {
 
 	}
 
-	@Override
 	public Despesa getDados(Scanner scanner) {
 		System.out.print("Digite o nome da Despesa: ");
 		String nome = scanner.nextLine();

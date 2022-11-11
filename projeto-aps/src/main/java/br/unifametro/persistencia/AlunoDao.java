@@ -39,7 +39,6 @@ public class AlunoDao implements Dao<Aluno> {
 
 		try (FileWriter fileWriter = new FileWriter(file, UTF_8, true)) {
 			fileWriter.write(aluno.toFile() + lineSeparator());
-			fileWriter.close();
 			System.out.printf("Aluno %s cadastrado com sucesso.", aluno.getNome());
 
 		} catch (IOException e) {
@@ -101,14 +100,14 @@ public class AlunoDao implements Dao<Aluno> {
 
 	public void editar(Aluno dadosAntigos, Aluno dadosNovos) {
 
-		try (Stream<String> stream = Files.lines(Paths.get(getFileName()))) {
+		try (Stream<String> stream = Files.lines(getFilePath())) {
 
 			// Do the line replace
 			List<String> list = stream.map(line -> line.equals(dadosAntigos.toFile()) ? dadosNovos.toFile() : line)
 					.collect(toList());
 
 			// Write the content back
-			Files.write(Paths.get(getFileName()), list);
+			Files.write(getFilePath(), list, UTF_8);
 
 		} catch (NoSuchFileException e) {
 			System.err.println(e.getLocalizedMessage());

@@ -3,6 +3,7 @@ package br.unifametro.modelo;
 import static java.math.RoundingMode.HALF_UP;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class Reserva implements Model {
 
@@ -40,6 +41,27 @@ public class Reserva implements Model {
 	public String toString() {
 		return String.format("Reserva => [Aluno %s de ID: %d | Total de Rendimentos R$%s | Valor da Contribuição R$%s",
 				aluno.getNome(), alunoId, totalDeRendimentos, valorDaContribuicao);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(alunoId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Reserva)) {
+			return false;
+		}
+		Reserva other = (Reserva) obj;
+		return Objects.equals(alunoId, other.alunoId);
+	}
+
+	public Integer getAlunoId() {
+		return alunoId;
 	}
 
 	public Aluno getAluno() {
