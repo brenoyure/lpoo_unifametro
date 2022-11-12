@@ -24,9 +24,13 @@ public class AlunoService implements Service<Aluno> {
 
 	@Override
 	public void editar(Scanner scanner) {
+		if (fileNotExists()) {
+			System.err.println("Nenhum Aluno Cadastrado.");
+			return;
+		}
 		Optional<Aluno> aluno = get(scanner);
 		if (aluno.isEmpty()) {
-			System.err.println("Aluno não encontrado");
+			System.err.println("Aluno com o ID informado não encontrado.");
 			return;
 		}
 
@@ -39,6 +43,10 @@ public class AlunoService implements Service<Aluno> {
 
 	@Override
 	public void excluir(Scanner scanner) {
+		if (fileNotExists()) {
+			System.err.println("Nenhum Aluno Cadastrado.");
+			return;
+		}
 		get(scanner).ifPresentOrElse(a -> alunoDao.excluir(a), () -> System.err.println("Aluno não encontrado."));
 	}
 
@@ -50,16 +58,29 @@ public class AlunoService implements Service<Aluno> {
 	 * @return Optional de Aluno
 	 */
 	public Optional<Aluno> get(Scanner scanner) {
+		if (fileNotExists()) {
+			System.err.println("Nenhum Aluno Cadastrado.");
+			return Optional.empty();
+		}
+
 		System.out.printf("Digite o ID do Aluno: ");
 		Integer id = scanner.nextInt();
 		return alunoDao.findById(id);
 	}
 	
 	public Optional<Aluno> getById(Integer id) {
+		if (fileNotExists()) {
+			System.err.println("Nenhum Aluno Cadastrado.");
+			return Optional.empty();
+		}
 		return alunoDao.findById(id);
 	}
 
 	public Optional<Aluno> getByName(Scanner scanner) {
+		if (fileNotExists()) {
+			System.err.println("Nenhum Aluno Cadastrado.");
+			return Optional.empty();
+		}
 		System.out.printf("Digite o nome do Aluno: ");
 		String nome = scanner.nextLine();
 		return alunoDao.findByName(nome);

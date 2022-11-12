@@ -111,6 +111,9 @@ public class AlunoDao implements Dao<Aluno> {
 
 			// Write the content back
 			Files.write(getFilePath(), list, UTF_8);
+			System.out.printf("Dados cadastrais do aluno atualizados :");
+			System.out.printf("De => %s", dadosAntigos.toFile());
+			System.out.printf("Para => %s", dadosNovos.toFile());
 
 		} catch (NoSuchFileException e) {
 			System.err.println(e.getLocalizedMessage());
@@ -126,6 +129,7 @@ public class AlunoDao implements Dao<Aluno> {
 		try (Stream<String> lines = Files.lines(getFilePath(), UTF_8)) {
 			List<String> list = lines.filter(l -> !l.equalsIgnoreCase(aluno.toFile())).toList();
 			Files.write(getFilePath(), list, UTF_8);
+			System.out.printf("Aluno %s excluído com sucesso.", aluno.getNome());
 		} catch (IOException e) {
 			System.err.println(e.getLocalizedMessage());
 		}

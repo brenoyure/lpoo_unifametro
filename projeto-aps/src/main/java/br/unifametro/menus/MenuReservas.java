@@ -33,7 +33,6 @@ public class MenuReservas {
 			sc.reset();
 			exibirMenu(sc);
 		}
-		sc.nextLine();
 
 		switch (opcao) {
 			case 1:

@@ -10,7 +10,7 @@ public class RepublicaApplication {
 
         try (Scanner sc = new Scanner(System.in)) {
 
-            Menu menuPrincipal = new Menu(sc);
+            Menu menuPrincipal = new Menu();
             menuPrincipal.exibir(sc);
         }
 

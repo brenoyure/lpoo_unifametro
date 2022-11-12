@@ -5,44 +5,34 @@ import java.util.Scanner;
 
 public class Menu {
 
-	private final Scanner sc;
 	private MenuAlunos alunos;
 	private MenuReservas reservas;
-	private Integer opcao;
+	private boolean continuarNoAplicativo = true;
 
-	public Menu(Scanner keyboardScanner) {
-		this.sc = keyboardScanner;
+	public Menu() {
 		this.alunos = new MenuAlunos();
 		this.reservas = new MenuReservas();
 	}
 
-	public void menuPrincipal() {
-
+	public void exibir(Scanner scanner) {
+		exibirDicas();
 		do {
-			exibir(sc);
-		} while (opcao != 0);
+			exibirMenuPrincipal(scanner);
+		} while (continuarNoAplicativo == true);
 
 	}
 
-	public void exibir(Scanner scanner) {
+	private void exibirMenuPrincipal(Scanner scanner) {
 
-		System.out.println("\n####### República Unifametro #########");
-		System.out.println("");
+		exibirOpcoes();
+		int opcao = 0;
 
-		System.out.printf("\n 1 - Serviços de Alunos");
-		System.out.printf("\n 2 - Serviços de Reservas");
-		System.out.printf("\n 0 - Sair");
-
-		System.out.printf("\nEscolha uma opção => ");
 		try {
-			opcao = sc.nextInt();
+			opcao = scanner.nextInt();
 		} catch (InputMismatchException e) {
-			System.err.println("\nApenas números são permitidos\n");
-			sc.nextLine();
-			sc.reset();
-			exibir(sc);
+			System.err.printf("Você digitou '%s', apenas números são permitidos ", scanner.next());
+			exibirMenuPrincipal(scanner);
 		}
-		sc.nextLine();
 
 		switch (opcao) {
 			case 1:
@@ -54,7 +44,8 @@ public class Menu {
 				break;
 
 			case 0:
-				opcao = 0;
+				continuarNoAplicativo = false;
+				System.out.println("Saindo...Obrigado por utilizar.");
 				break;
 
 			default:
@@ -62,6 +53,26 @@ public class Menu {
 				break;
 		}
 
+	}
+
+	private void exibirOpcoes() {
+		System.out.printf("\n####### República Unifametro #########\n");
+
+		System.out.printf("\n 1 - Serviços de Alunos");
+		System.out.printf("\n 2 - Serviços de Reservas");
+		System.out.printf("\n 0 - Sair");
+
+		System.out.printf("\nEscolha uma opção => ");
+	}
+
+	private void exibirDicas() {
+		System.out.println("\nBoas vindas ao aplicativo República Unifametro");
+		System.out.println(
+				"DICAS para uma boa experiência ao cadastrar ou editar os registros, para: ");
+		System.out.println(
+				"\n => Campos texto, como Nome: Favor não utilizar o ; visto que este é utilizado ao salvar os dados no arquivo .txt");
+		System.out.println(
+				"\n => Valores monetários, separe o decimal por vírgula, por exemplo, utilize ' R$5,00 ' ao invés de ' R$ 5.00 '.");
 	}
 
 }
