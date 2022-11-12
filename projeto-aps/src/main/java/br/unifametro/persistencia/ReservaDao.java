@@ -33,7 +33,8 @@ public class ReservaDao implements Dao<Reserva> {
 		try (FileWriter fw = new FileWriter(file, UTF_8, true)) {
 			fw.write(reserva.toFile() + System.lineSeparator());
 			fw.close();
-			System.out.println("Reserva cadastrada com sucesso.");
+			System.out.printf("\nReserva do aluno %s cadastrada com sucesso.", reserva.getAluno().getNome());
+			System.out.printf("\n%s\n", reserva);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -55,8 +56,8 @@ public class ReservaDao implements Dao<Reserva> {
 			try {
 
 				List<String> list = findAll().filter(r -> !r.equals(reserva)).map(Reserva::toFile).toList();
-
 				Files.write(getFilePath(), list, UTF_8);
+				System.out.printf("\nA reserva '%s' foi excluída com sucesso. ", reserva);
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.err.println("Erro ao Ler o arquivo.");

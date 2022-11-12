@@ -47,7 +47,8 @@ public class AlunoService implements Service<Aluno> {
 			System.err.println("Nenhum Aluno Cadastrado.");
 			return;
 		}
-		get(scanner).ifPresentOrElse(a -> alunoDao.excluir(a), () -> System.err.println("Aluno não encontrado."));
+		System.out.printf("Para excluir, ");
+		get(scanner).ifPresentOrElse(a -> alunoDao.excluir(a), () -> System.err.println("Aluno com o ID informado não encontrado."));
 	}
 
 	@Override

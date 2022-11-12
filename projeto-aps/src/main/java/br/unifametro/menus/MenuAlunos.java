@@ -46,7 +46,7 @@ public class MenuAlunos {
 				break;
 
 			case 3:
-				servico.get(sc).ifPresentOrElse(a -> System.out.printf("\n%s\n", a), () -> System.err.println("Aluno não encontrado"));
+				servico.get(sc).ifPresentOrElse(a -> System.out.printf("\n%s\n", a), () -> System.err.println("Aluno não encontrado."));
 				break;
 
 			case 4:

@@ -43,14 +43,19 @@ public class ReservasService implements Service<Reserva> {
 			System.err.println("Nenhuma Reserva Cadastrada.");
 			return;
 		}
-		System.out.println("Digite o ID de um aluno para excluir as suas reservas do mês atual.");
+		System.out.printf("Para excluir, ");
 		get(scanner).ifPresentOrElse(r -> dao.excluir(r),
-				() -> System.err.println("Reservas com o ID do Aluno informado não encontradas."));
+				() -> System.err.println("Reserva com o ID do Aluno informado não encontrada."));
 
 	}
 
 	@Override
 	public Optional<Reserva> get(Scanner scanner) {
+		if (fileNotExists() || nenhumAlunoCadastrado()) {
+			System.err.println("Nenhuma Reserva Cadastrada.");
+			return Optional.empty();
+		}
+		System.out.printf("\nDigite o ID do Aluno que possui a reserva: ");
 		Integer alunoId = scanner.nextInt();
 		return dao.findAll().filter(r -> r.getAlunoId().equals(alunoId)).findFirst();
 	}

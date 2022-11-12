@@ -8,10 +8,10 @@ public class RepublicaApplication {
 
     public static void main(String[] args) {
 
-        try (Scanner sc = new Scanner(System.in)) {
+        try (Scanner keyboardInput = new Scanner(System.in)) {
 
             Menu menuPrincipal = new Menu();
-            menuPrincipal.exibir(sc);
+            menuPrincipal.exibir(keyboardInput);
         }
 
     }
