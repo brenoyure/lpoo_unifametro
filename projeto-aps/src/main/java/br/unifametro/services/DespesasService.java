@@ -25,6 +25,8 @@ public class DespesasService implements Service<Despesa> {
 	@Override
 	public Optional<Despesa> get(Scanner scanner) {
 		System.out.printf("Digite o nome da Despesa: ");
+		if (scanner.nextLine() != "")
+			scanner.nextLine();
 		String nome = scanner.nextLine();
 		return despesasDao.findByName(nome);
 	}
@@ -48,8 +50,14 @@ public class DespesasService implements Service<Despesa> {
 		}
 
 		Optional<Despesa> despesa = get(scanner);
-		despesa.ifPresentOrElse(d -> despesasDao.editar(despesa.get(), getDados(scanner)),
-				() -> System.err.println("Nenhuma despesa com o nome informado encontrada."));
+
+		if (despesa.isEmpty()) {
+			System.err.println("Despesa com o Nome informado não encontrada.");
+			return;
+		}
+
+		System.out.printf("Editando dados de: %s\n", despesa.get());
+		despesasDao.editar(despesa.get(), getDados(scanner));
 
 	}
 
@@ -65,6 +73,9 @@ public class DespesasService implements Service<Despesa> {
 	}
 
 	public Despesa getDados(Scanner scanner) {
+		if (scanner.nextLine() != "")
+			scanner.nextLine();
+
 		System.out.print("Digite o nome da Despesa: ");
 		String nome = scanner.nextLine();
 

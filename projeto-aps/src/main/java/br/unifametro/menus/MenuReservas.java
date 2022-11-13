@@ -18,19 +18,25 @@ public class MenuReservas {
 	private Service<Aluno> alunoServices = new AlunoService(alunoDao);
 	private Dao<Reserva> reservaDao = new ReservaDao((AlunoService) alunoServices);
 	private Service<Reserva> servico = new ReservasService(reservaDao, (AlunoService) alunoServices);
-	
-	private Integer opcao = 0;
+
+	private boolean ficarNesteMenu = true;
 
 	public void exibirMenu(Scanner sc) {
 
+		do {
+			exibir(sc);
+		} while (ficarNesteMenu == true);
+	}
+
+	private void exibir(Scanner sc) {
+
 		exibirOpcoes();
+		int opcao = 0;
 
 		try {
 			opcao = sc.nextInt();
 		} catch (InputMismatchException e) {
-			System.err.println("\nApenas números são permitidos\n");
-			sc.nextLine();
-			sc.reset();
+			System.err.printf("Você digitou '%s', apenas números são permitidos.", sc.next());
 			exibirMenu(sc);
 		}
 
@@ -47,34 +53,30 @@ public class MenuReservas {
 
 			case 3:
 				servico.get(sc).ifPresentOrElse(System.out::println,
-						() -> System.err.println("Nenhuma Reserva com o ID do Aluno informado não encontrada."));
-				servico.listar();
-				exibirMenu(sc);
+						() -> System.err.println("Nenhuma Reserva com o ID do Aluno informado encontrada."));
 				break;
 
 			case 4:
 				servico.listar();
-				exibirMenu(sc);
 				break;
 
 			case 5:
 				servico.excluir(sc);
-				exibirMenu(sc);
 				break;
 
 			case 0:
+				ficarNesteMenu = false;
 				break;
 
 			default:
 				System.err.println("Opção não identificada. Tente novamente.");
-				exibirMenu(sc);
 				break;
 		}
 
 	}
 
 	private void exibirOpcoes() {
-		System.out.println("\n####### Menu de Alunos #########");
+		System.out.println("\n####### Menu de Reservas #########");
 
 		System.out.printf("\n 1 - Cadastrar Nova Reserva.");
 		System.out.printf("\n 2 - Editar Reserva cadastrada.");

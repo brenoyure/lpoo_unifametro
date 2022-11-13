@@ -111,8 +111,8 @@ public class AlunoDao implements Dao<Aluno> {
 
 			// Write the content back
 			Files.write(getFilePath(), list, UTF_8);
-			System.out.printf("Dados cadastrais do aluno atualizados :");
-			System.out.printf("De => %s", dadosAntigos.toFile());
+			System.out.printf("Dados cadastrais do aluno atualizados: ");
+			System.out.printf("De => %s\n", dadosAntigos.toFile());
 			System.out.printf("Para => %s", dadosNovos.toFile());
 
 		} catch (NoSuchFileException e) {

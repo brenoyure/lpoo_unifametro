@@ -33,7 +33,8 @@ public class AlunoService implements Service<Aluno> {
 			System.err.println("Aluno com o ID informado não encontrado.");
 			return;
 		}
-
+		
+		System.out.printf("Editando dados de: %s", aluno.get());
 		Aluno novosDados = getDadosEdicao(scanner);
 		novosDados.setId(aluno.get().getId());
 
@@ -48,7 +49,8 @@ public class AlunoService implements Service<Aluno> {
 			return;
 		}
 		System.out.printf("Para excluir, ");
-		get(scanner).ifPresentOrElse(a -> alunoDao.excluir(a), () -> System.err.println("Aluno com o ID informado não encontrado."));
+		get(scanner).ifPresentOrElse(a -> alunoDao.excluir(a),
+				() -> System.err.println("Aluno com o ID informado não encontrado."));
 	}
 
 	@Override
@@ -68,7 +70,7 @@ public class AlunoService implements Service<Aluno> {
 		Integer id = scanner.nextInt();
 		return alunoDao.findById(id);
 	}
-	
+
 	public Optional<Aluno> getById(Integer id) {
 		if (fileNotExists()) {
 			System.err.println("Nenhum Aluno Cadastrado.");
@@ -82,6 +84,8 @@ public class AlunoService implements Service<Aluno> {
 			System.err.println("Nenhum Aluno Cadastrado.");
 			return Optional.empty();
 		}
+		if (scanner.nextLine() != "")
+			scanner.nextLine();
 		System.out.printf("Digite o nome do Aluno: ");
 		String nome = scanner.nextLine();
 		return alunoDao.findByName(nome);
@@ -94,8 +98,7 @@ public class AlunoService implements Service<Aluno> {
 			return;
 		}
 
-		alunoDao.findAll().forEach(a -> System.out.printf("id: %d, %s, %s, R$%s%n", a.getId(), a.getNome(),
-				a.getEmail(), a.getTotalDeRendimentos()));
+		alunoDao.findAll().forEach(System.out::println);
 	}
 
 	public Aluno getDados(Scanner scanner) {

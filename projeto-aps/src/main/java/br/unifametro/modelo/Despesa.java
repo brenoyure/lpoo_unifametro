@@ -1,6 +1,7 @@
 package br.unifametro.modelo;
 
 import java.math.BigDecimal;
+import java.util.Locale;
 import java.util.Objects;
 
 public class Despesa implements Model {
@@ -25,8 +26,9 @@ public class Despesa implements Model {
 
 	@Override
 	public String toString() {
-		return "Despesa [nome=" + nome + ", descricao=" + descricao + ", categoria=" + categoria + ", PRIORIDADE="
-				+ PRIORIDADE + ", valor=" + valor + "]";
+		return String.format(new Locale("PT", "BR"),
+				"Despesa => [Nome: %s | Descrição: %s | Categoria: %s | Prioridade: %s | Valor: R$%s]",
+				nome, descricao, categoria, PRIORIDADE, valor);
 	}
 
 	public String toFile() {

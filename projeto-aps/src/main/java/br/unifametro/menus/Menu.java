@@ -7,11 +7,13 @@ public class Menu {
 
 	private MenuAlunos alunos;
 	private MenuReservas reservas;
+	private MenuDespesas despesas;
 	private boolean continuarNoAplicativo = true;
 
 	public Menu() {
 		this.alunos = new MenuAlunos();
 		this.reservas = new MenuReservas();
+		this.despesas = new MenuDespesas();
 	}
 
 	public void exibir(Scanner scanner) {
@@ -43,6 +45,9 @@ public class Menu {
 				reservas.exibirMenu(scanner);
 				break;
 
+			case 3:
+				despesas.exibirMenu(scanner);
+				break;
 			case 0:
 				continuarNoAplicativo = false;
 				System.out.println("Saindo...Obrigado por utilizar.");
@@ -60,6 +65,7 @@ public class Menu {
 
 		System.out.printf("\n 1 - Serviços de Alunos");
 		System.out.printf("\n 2 - Serviços de Reservas");
+		System.out.printf("\n 3 - Serviços de Despesas");
 		System.out.printf("\n 0 - Sair");
 
 		System.out.printf("\nEscolha uma opção => ");

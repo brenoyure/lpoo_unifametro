@@ -39,7 +39,7 @@ public class Reserva implements Model {
 
 	@Override
 	public String toString() {
-		return String.format("Reserva => [Aluno %s de ID: %d | Total de Rendimentos R$%s | Valor da Contribuição R$%s]",
+		return String.format("Reserva => [Aluno %s de ID: %d | Total de Rendimentos: R$%s | Valor da Contribuição: R$%s]",
 				aluno.getNome(), alunoId, totalDeRendimentos, valorDaContribuicao);
 	}
 
