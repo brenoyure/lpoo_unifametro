@@ -1,6 +1,5 @@
 package br.unifametro.persistencia;
 
-import static br.unifametro.modelo.Prioridade.PODE_ESPERAR;
 import static java.lang.System.lineSeparator;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Locale.US;
@@ -23,6 +22,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import br.unifametro.modelo.Despesa;
+import br.unifametro.modelo.Prioridade;
 import br.unifametro.persistencia.interfaces.DaoEditavel;
 
 /**
@@ -54,7 +54,7 @@ public class DespesasDao implements DaoEditavel<Despesa> {
 		return findAll().filter(d -> d.getNome().equalsIgnoreCase(nome)).findFirst();
 	}
 
-	@SuppressWarnings("unused")
+	@Override
 	public Stream<Despesa> findAll() {
 
 		Set<Despesa> despesas = new LinkedHashSet<>();
@@ -74,10 +74,10 @@ public class DespesasDao implements DaoEditavel<Despesa> {
 						String nome = scLinha.next();
 						String descricao = scLinha.next();
 						String categoria = scLinha.next();
-						String prioridade = scLinha.next();
+						Prioridade prioridade = Prioridade.valueOf(scLinha.next());
 						BigDecimal valor = scLinha.nextBigDecimal();
 
-						Despesa d = new Despesa(nome, descricao, categoria, PODE_ESPERAR, valor);
+						Despesa d = new Despesa(nome, descricao, categoria, prioridade, valor);
 						despesas.add(d);
 
 					}
@@ -110,6 +110,9 @@ public class DespesasDao implements DaoEditavel<Despesa> {
 
 				// Write the content back
 				Files.write(Paths.get(getFileName()), list, UTF_8);
+				System.out.printf("Dados cadastrais da Despesa atualizados: ");
+				System.out.printf("\nDe => %s\n", dadosAntigos);
+				System.out.printf("Para => %s\n", dadosNovos);
 
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -119,6 +122,7 @@ public class DespesasDao implements DaoEditavel<Despesa> {
 
 	}
 
+	@Override
 	public void excluir(Despesa despesa) {
 
 		if (fileExists()) {

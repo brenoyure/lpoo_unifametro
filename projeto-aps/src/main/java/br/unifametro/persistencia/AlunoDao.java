@@ -113,8 +113,8 @@ public class AlunoDao implements DaoEditavel<Aluno> {
 			// Write the content back
 			Files.write(getFilePath(), list, UTF_8);
 			System.out.printf("Dados cadastrais do aluno atualizados: ");
-			System.out.printf("De => %s\n", dadosAntigos.toFile());
-			System.out.printf("Para => %s", dadosNovos.toFile());
+			System.out.printf("\nDe => %s", dadosAntigos);
+			System.out.printf("\nPara => %s", dadosNovos);
 
 		} catch (NoSuchFileException e) {
 			System.err.println(e.getLocalizedMessage());
