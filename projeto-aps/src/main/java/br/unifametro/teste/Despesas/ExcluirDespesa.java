@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import br.unifametro.persistencia.DespesasDao;
 import br.unifametro.services.DespesasService;
+import br.unifametro.services.auxiliares.DespesaPreencheDados;
 
 public class ExcluirDespesa {
 
@@ -11,7 +12,7 @@ public class ExcluirDespesa {
 
 		Scanner sc = new Scanner(System.in);
 		DespesasDao dao = new DespesasDao();
-		DespesasService serv = new DespesasService(dao);
+		DespesasService serv = new DespesasService(dao, new DespesaPreencheDados());
 
 		serv.excluir(sc);
 

@@ -1,4 +1,4 @@
-package br.unifametro.services;
+package br.unifametro.services.interfaces;
 
 import java.util.Optional;
 import java.util.Scanner;
@@ -6,8 +6,6 @@ import java.util.Scanner;
 public interface Service<T> {
 
 	void cadastrar(Scanner scanner);
-
-	void editar(Scanner scanner);
 
 	void excluir(Scanner scanner);
 

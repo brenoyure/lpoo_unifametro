@@ -1,12 +1,10 @@
-package br.unifametro.persistencia;
+package br.unifametro.persistencia.interfaces;
 
 import java.util.stream.Stream;
 
 public interface Dao<T> {
 
 	void salvar(T t);
-
-	void editar(T dadosAntigos, T dadosNovos);
 
 	void excluir(T t);
 

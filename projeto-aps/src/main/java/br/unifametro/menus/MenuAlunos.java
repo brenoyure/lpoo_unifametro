@@ -35,40 +35,40 @@ public class MenuAlunos {
 		}
 
 		switch (opcao) {
-			case 1:
-				servico.cadastrar(sc);
-				break;
+		case 1:
+			servico.cadastrar(sc);
+			break;
 
-			case 2:
-				servico.editar(sc);
-				break;
+		case 2:
+			servico.editar(sc);
+			break;
 
-			case 3:
-				servico.get(sc).ifPresentOrElse(a -> System.out.printf("\n%s\n", a),
-						() -> System.err.println("Aluno com o ID informado não encontrado."));
-				break;
+		case 3:
+			servico.get(sc).ifPresentOrElse(a -> System.out.printf("\n%s\n", a),
+					() -> System.err.println("Aluno com o ID informado não encontrado."));
+			break;
 
-			case 4:
-				System.out.println("DICA: Digite o Nome ou Sobrenome começando com letra maiúscula.");
-				servico.getByName(sc).ifPresentOrElse(System.out::println,
-						() -> System.err.println("Aluno com o nome informado não encontrado."));
-				break;
+		case 4:
+			System.out.println("DICA: Digite o Nome ou Sobrenome começando com letra maiúscula.");
+			servico.getByName(sc).ifPresentOrElse(System.out::println,
+					() -> System.err.println("Aluno com o nome informado não encontrado."));
+			break;
 
-			case 5:
-				servico.listar();
-				break;
+		case 5:
+			servico.listar();
+			break;
 
-			case 6:
-				servico.excluir(sc);
-				break;
+		case 6:
+			servico.excluir(sc);
+			break;
 
-			case 0:
-				ficarNesteMenu = false;
-				break;
+		case 0:
+			ficarNesteMenu = false;
+			break;
 
-			default:
-				System.err.println("Opção não identificada. Tente novamente.");
-				break;
+		default:
+			System.err.println("Opção não identificada. Tente novamente.");
+			break;
 		}
 
 	}

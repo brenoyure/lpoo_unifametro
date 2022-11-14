@@ -21,13 +21,14 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import br.unifametro.modelo.Aluno;
+import br.unifametro.persistencia.interfaces.DaoEditavel;
 
 /**
  * Classe responsável pelas operações de IO com o arquivo de persistência.
  * 
  * @see br.unifametro.services.AlunoService
  */
-public class AlunoDao implements Dao<Aluno> {
+public class AlunoDao implements DaoEditavel<Aluno> {
 
 	private static File file = new File("alunos.txt");
 

@@ -1,25 +1,40 @@
 package br.unifametro.services;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.Scanner;
 
 import br.unifametro.modelo.Aluno;
 import br.unifametro.persistencia.AlunoDao;
-import br.unifametro.persistencia.Dao;
+import br.unifametro.persistencia.interfaces.Dao;
+import br.unifametro.persistencia.interfaces.DaoEditavel;
+import br.unifametro.services.auxiliares.AlunoPreencheDados;
+import br.unifametro.services.interfaces.EditavelService;
+import br.unifametro.services.interfaces.auxiliares.PreencheDadosComEdicao;
 
-public class AlunoService implements Service<Aluno> {
+public class AlunoService implements EditavelService<Aluno> {
 
-	private final AlunoDao alunoDao;
+	private final DaoEditavel<Aluno> alunoDao;
+	private final PreencheDadosComEdicao<Aluno> dadosAluno;
+
+	public AlunoService() {
+		this.alunoDao = new AlunoDao();
+		this.dadosAluno = new AlunoPreencheDados();
+	}
 
 	public AlunoService(Dao<Aluno> alunoDao) {
-		this.alunoDao = (AlunoDao) alunoDao;
+		this.alunoDao = (DaoEditavel<Aluno>) alunoDao;
+		this.dadosAluno = new AlunoPreencheDados();
+	}
+
+	public AlunoService(Dao<Aluno> alunoDao, PreencheDadosComEdicao<Aluno> novoAluno) {
+		this.alunoDao = (DaoEditavel<Aluno>) alunoDao;
+		this.dadosAluno = novoAluno;
 	}
 
 	@Override
 	public void cadastrar(Scanner scanner) {
-		Aluno novoAluno = getDados(scanner);
-		alunoDao.salvar(novoAluno);
+		Aluno dadosNovoAluno = dadosAluno.getDados(scanner);
+		alunoDao.salvar(dadosNovoAluno);
 	}
 
 	@Override
@@ -33,9 +48,9 @@ public class AlunoService implements Service<Aluno> {
 			System.err.println("Aluno com o ID informado não encontrado.");
 			return;
 		}
-		
+
 		System.out.printf("Editando dados de: %s", aluno.get());
-		Aluno novosDados = getDadosEdicao(scanner);
+		Aluno novosDados = dadosAluno.getDadosEdicao(scanner);
 		novosDados.setId(aluno.get().getId());
 
 		alunoDao.editar(aluno.get(), novosDados);
@@ -68,7 +83,7 @@ public class AlunoService implements Service<Aluno> {
 
 		System.out.printf("Digite o ID do Aluno: ");
 		Integer id = scanner.nextInt();
-		return alunoDao.findById(id);
+		return alunoDao.findAll().filter(a -> a.getId().equals(id)).findFirst();
 	}
 
 	public Optional<Aluno> getById(Integer id) {
@@ -76,7 +91,7 @@ public class AlunoService implements Service<Aluno> {
 			System.err.println("Nenhum Aluno Cadastrado.");
 			return Optional.empty();
 		}
-		return alunoDao.findById(id);
+		return alunoDao.findAll().filter(a -> a.getId().equals(id)).findFirst();
 	}
 
 	public Optional<Aluno> getByName(Scanner scanner) {
@@ -88,7 +103,7 @@ public class AlunoService implements Service<Aluno> {
 			scanner.nextLine();
 		System.out.printf("Digite o nome do Aluno: ");
 		String nome = scanner.nextLine();
-		return alunoDao.findByName(nome);
+		return alunoDao.findAll().filter(a -> a.getNome().startsWith(nome)).findFirst();
 	}
 
 	@Override
@@ -99,33 +114,6 @@ public class AlunoService implements Service<Aluno> {
 		}
 
 		alunoDao.findAll().forEach(System.out::println);
-	}
-
-	public Aluno getDados(Scanner scanner) {
-		System.out.print("\nDigite o ID: ");
-		Integer id = scanner.nextInt();
-		scanner.nextLine();
-		System.out.print("Digite o nome do Aluno: ");
-		String nome = scanner.nextLine();
-		System.out.print("\nAgora o email: ");
-		String email = scanner.nextLine();
-		System.out.print("\nPor fim, o total de rendimentos: ");
-		BigDecimal rendimentos = scanner.nextBigDecimal();
-
-		return new Aluno(id, nome, email, rendimentos);
-	}
-
-	private Aluno getDadosEdicao(Scanner scanner) {
-		if (scanner.nextLine() != "")
-			scanner.nextLine();
-		System.out.print("\nDigite o nome do Aluno: ");
-		String nome = scanner.nextLine();
-		System.out.print("\nAgora o email: ");
-		String email = scanner.nextLine();
-		System.out.print("\nPor fim, o total de rendimentos: ");
-		BigDecimal rendimentos = scanner.nextBigDecimal();
-
-		return new Aluno(nome, email, rendimentos);
 	}
 
 	@Override

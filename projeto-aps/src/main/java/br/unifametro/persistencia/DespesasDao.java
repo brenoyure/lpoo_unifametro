@@ -23,13 +23,14 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import br.unifametro.modelo.Despesa;
+import br.unifametro.persistencia.interfaces.DaoEditavel;
 
 /**
  * Classe responsável pelas operações de IO com o arquivo de persistência.
  * 
  * @see br.unifametro.services.DespesasService
  */
-public class DespesasDao implements Dao<Despesa> {
+public class DespesasDao implements DaoEditavel<Despesa> {
 
 	private final File file = new File(getFileName());
 

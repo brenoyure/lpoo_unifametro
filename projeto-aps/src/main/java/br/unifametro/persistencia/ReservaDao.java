@@ -17,15 +17,17 @@ import java.util.stream.Stream;
 
 import br.unifametro.modelo.Aluno;
 import br.unifametro.modelo.Reserva;
+import br.unifametro.persistencia.interfaces.Dao;
 import br.unifametro.services.AlunoService;
+import br.unifametro.services.interfaces.Service;
 
 public class ReservaDao implements Dao<Reserva> {
 
 	private final File file = new File(getFileName());
 	private final AlunoService alunoService;
 
-	public ReservaDao(AlunoService alunoService) {
-		this.alunoService = alunoService;
+	public ReservaDao(Service<Aluno> alunoService) {
+		this.alunoService = (AlunoService) alunoService;
 	}
 
 	@Override
@@ -40,12 +42,6 @@ public class ReservaDao implements Dao<Reserva> {
 			e.printStackTrace();
 			System.err.println("Erro ao salvar.");
 		}
-
-	}
-
-	@Override
-	public void editar(Reserva dadosAntigos, Reserva dadosNovos) {
-		// TODO Auto-generated method stub
 
 	}
 

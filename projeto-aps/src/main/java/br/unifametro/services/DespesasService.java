@@ -1,25 +1,27 @@
 package br.unifametro.services;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.Scanner;
 
 import br.unifametro.modelo.Despesa;
-import br.unifametro.modelo.Prioridade;
-import br.unifametro.persistencia.DespesasDao;
+import br.unifametro.persistencia.interfaces.DaoEditavel;
+import br.unifametro.services.interfaces.EditavelService;
+import br.unifametro.services.interfaces.auxiliares.PreencheDados;
 
-public class DespesasService implements Service<Despesa> {
+public class DespesasService implements EditavelService<Despesa> {
 
-	private final DespesasDao despesasDao;
+	private final DaoEditavel<Despesa> dao;
+	private final PreencheDados<Despesa> novaDespesa;
 
-	public DespesasService(DespesasDao dao) {
-		this.despesasDao = dao;
+	public DespesasService(DaoEditavel<Despesa> dao, PreencheDados<Despesa> novaDespesa) {
+		this.dao = dao;
+		this.novaDespesa = novaDespesa;
 	}
 
 	@Override
 	public void cadastrar(Scanner scanner) {
-		Despesa despesa = getDados(scanner);
-		despesasDao.salvar(despesa);
+		Despesa despesa = novaDespesa.getDados(scanner);
+		dao.salvar(despesa);
 	}
 
 	@Override
@@ -28,7 +30,7 @@ public class DespesasService implements Service<Despesa> {
 		if (scanner.nextLine() != "")
 			scanner.nextLine();
 		String nome = scanner.nextLine();
-		return despesasDao.findByName(nome);
+		return dao.findAll().filter(d -> d.getNome().startsWith(nome)).findFirst();
 	}
 
 	@Override
@@ -38,7 +40,7 @@ public class DespesasService implements Service<Despesa> {
 			return;
 		}
 
-		despesasDao.findAll().forEach(System.out::println);
+		dao.findAll().forEach(System.out::println);
 	}
 
 	@Override
@@ -57,7 +59,7 @@ public class DespesasService implements Service<Despesa> {
 		}
 
 		System.out.printf("Editando dados de: %s\n", despesa.get());
-		despesasDao.editar(despesa.get(), getDados(scanner));
+		dao.editar(despesa.get(), novaDespesa.getDados(scanner));
 
 	}
 
@@ -68,32 +70,13 @@ public class DespesasService implements Service<Despesa> {
 			return;
 		}
 
-		get(scanner).ifPresentOrElse(d -> despesasDao.excluir(d), () -> System.err.println("Despesa não encontrada."));
+		get(scanner).ifPresentOrElse(d -> dao.excluir(d), () -> System.err.println("Despesa não encontrada."));
 
-	}
-
-	public Despesa getDados(Scanner scanner) {
-		if (scanner.nextLine() != "")
-			scanner.nextLine();
-
-		System.out.print("Digite o nome da Despesa: ");
-		String nome = scanner.nextLine();
-
-		System.out.print("\nForneça uma descrição: ");
-		String descricao = scanner.nextLine();
-
-		System.out.print("\nInforme a categoria: ");
-		String categoria = scanner.nextLine();
-
-		System.out.print("\nPor fim, o valor da despesa R$: ");
-		BigDecimal valor = scanner.nextBigDecimal();
-
-		return new Despesa(nome, descricao, categoria, Prioridade.MEDIA, valor);
 	}
 
 	@Override
 	public boolean fileNotExists() {
-		return !despesasDao.fileExists();
+		return !dao.fileExists();
 	}
 
 }

@@ -5,7 +5,8 @@ import java.util.Scanner;
 
 import br.unifametro.modelo.Aluno;
 import br.unifametro.modelo.Reserva;
-import br.unifametro.persistencia.Dao;
+import br.unifametro.persistencia.interfaces.Dao;
+import br.unifametro.services.interfaces.Service;
 
 public class ReservasService implements Service<Reserva> {
 
@@ -28,12 +29,6 @@ public class ReservasService implements Service<Reserva> {
 		Optional<Aluno> aluno = alunoService.get(scanner);
 		aluno.ifPresentOrElse(r -> dao.salvar(new Reserva(aluno.get())),
 				() -> System.err.println("Nenhum aluno com o ID informado encontrado."));
-
-	}
-
-	@Override
-	public void editar(Scanner scanner) {
-		// TODO Auto-generated method stub
 
 	}
 

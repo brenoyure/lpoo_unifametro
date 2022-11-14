@@ -53,8 +53,8 @@ public class Aluno implements Model {
 	@Override
 	public String toString() {
 		return String.format(new Locale("PT", "BR"),
-				"Aluno => [ID: %d | Nome: %s | Email: %s | Total de Rendimentos: R$%s",
-				id, nome, email, totalDeRendimentos);
+				"Aluno => [ID: %d | Nome: %s | Email: %s | Total de Rendimentos: R$%s]", id, nome, email,
+				totalDeRendimentos);
 	}
 
 	/**
