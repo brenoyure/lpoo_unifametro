@@ -5,7 +5,7 @@ Projeto da APS - Sistema de Cadastro de Despesas
 
 Pastas (packages) do projeto:
 
-Modelo -> representam os modelos de um Aluno, Despesa (Apenas a com Prioridade) e Reserva.
+Modelo -> representam os modelos de um Aluno, Despesa (Apenas a com Prioridade) e Reserva *.
 
 Persistência -> possui as classes Dao, responsáveis por manipular os arquivos de cada modelo,
 exemplo AlunoDao, contém os registros dos alunos.
@@ -21,6 +21,7 @@ Menu -> O Menu Principal contendo as opções para os outros Menus dos Serviços
 
 Classe RepublicaApplication -> resposável por iniciar o aplicativo.
 
+* Ao cadastrar uma nova reserva, o sistema já calcula o valor da contribuição do aluno.
 
 - não implementados ainda -
 * Modelo de Despesas FIXAS
