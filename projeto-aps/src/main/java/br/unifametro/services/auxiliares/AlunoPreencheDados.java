@@ -8,10 +8,14 @@ import br.unifametro.services.interfaces.auxiliares.PreencheDadosComEdicao;
 
 public class AlunoPreencheDados implements PreencheDadosComEdicao<Aluno> {
 
+    @Override
     public Aluno getDados(Scanner keyboardInput) {
         System.out.print("\nDigite o ID: ");
         Integer id = keyboardInput.nextInt();
-        keyboardInput.nextLine();
+
+        if (keyboardInput.nextLine() != "")
+            keyboardInput.nextLine();
+
         System.out.print("Digite o nome do Aluno: ");
         String nome = keyboardInput.nextLine();
         System.out.print("\nAgora o email: ");
@@ -23,15 +27,15 @@ public class AlunoPreencheDados implements PreencheDadosComEdicao<Aluno> {
     }
 
     @Override
-    public Aluno getDadosEdicao(Scanner scanner) {
-        if (scanner.nextLine() != "")
-            scanner.nextLine();
+    public Aluno getDadosEdicao(Scanner keyboardInput) {
+        if (keyboardInput.nextLine() != "")
+            keyboardInput.nextLine();
         System.out.print("\nDigite o nome do Aluno: ");
-        String nome = scanner.nextLine();
+        String nome = keyboardInput.nextLine();
         System.out.print("\nAgora o email: ");
-        String email = scanner.nextLine();
+        String email = keyboardInput.nextLine();
         System.out.print("\nPor fim, o total de rendimentos: ");
-        BigDecimal rendimentos = scanner.nextBigDecimal();
+        BigDecimal rendimentos = keyboardInput.nextBigDecimal();
 
         return new Aluno(nome, email, rendimentos);
     }

@@ -23,14 +23,14 @@ public class DespesaPreencheDados implements PreencheDados<Despesa> {
         System.out.printf("\nInforme a categoria: ");
         String categoria = scanner.nextLine();
 
-        System.out.printf("Use o teclado numérico, para o nível de Prioridade,\n sendo: %s", exibePrioridades());
+        System.out.printf("\nUse o teclado numérico, para o nível de Prioridade,\nsendo: %s\n =>", exibePrioridades());
         int j = scanner.nextInt();
         Prioridade prioridade = Prioridade.values()[--j];
 
         if (scanner.nextLine() != "")
             scanner.nextLine();
 
-        System.out.printf("DICA: Ao digitar, separe o decimal com vírgula, por exemplo '1200,00' ");
+        System.out.printf("\nDICA: Ao digitar, separe o decimal com vírgula, por exemplo '120,00' ");
         System.out.printf("\nPor fim, o valor da despesa R$: ");
         BigDecimal valor = scanner.nextBigDecimal();
 
