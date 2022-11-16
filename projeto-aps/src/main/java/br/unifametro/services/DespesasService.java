@@ -2,6 +2,7 @@ package br.unifametro.services;
 
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 import br.unifametro.modelo.Despesa;
 import br.unifametro.persistencia.interfaces.DaoEditavel;
@@ -31,6 +32,11 @@ public class DespesasService implements EditavelService<Despesa> {
 			scanner.nextLine();
 		String nome = scanner.nextLine();
 		return dao.findAll().filter(d -> d.getNome().startsWith(nome)).findFirst();
+	}
+
+	@Override
+	public Stream<Despesa> getAll() {
+		return dao.findAll();
 	}
 
 	@Override

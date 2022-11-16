@@ -2,6 +2,7 @@ package br.unifametro.services;
 
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 import br.unifametro.modelo.Aluno;
 import br.unifametro.modelo.Reserva;
@@ -53,6 +54,11 @@ public class ReservasService implements Service<Reserva> {
 		System.out.printf("\nDigite o ID do Aluno que possui a reserva: ");
 		Integer alunoId = scanner.nextInt();
 		return dao.findAll().filter(r -> r.getAlunoId().equals(alunoId)).findFirst();
+	}
+
+	@Override
+	public Stream<Reserva> getAll() {
+		return dao.findAll();
 	}
 
 	@Override

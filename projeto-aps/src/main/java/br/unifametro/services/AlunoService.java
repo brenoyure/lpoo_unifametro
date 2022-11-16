@@ -2,6 +2,7 @@ package br.unifametro.services;
 
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 import br.unifametro.modelo.Aluno;
 import br.unifametro.persistencia.AlunoDao;
@@ -104,6 +105,11 @@ public class AlunoService implements EditavelService<Aluno> {
 		System.out.printf("Digite o nome do Aluno: ");
 		String nome = scanner.nextLine();
 		return alunoDao.findAll().filter(a -> a.getNome().startsWith(nome)).findFirst();
+	}
+
+	@Override
+	public Stream<Aluno> getAll() {
+		return alunoDao.findAll();
 	}
 
 	@Override

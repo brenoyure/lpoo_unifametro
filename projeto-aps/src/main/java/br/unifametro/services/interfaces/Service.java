@@ -2,6 +2,7 @@ package br.unifametro.services.interfaces;
 
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 public interface Service<T> {
 
@@ -10,6 +11,8 @@ public interface Service<T> {
 	void excluir(Scanner scanner);
 
 	Optional<T> get(Scanner scanner);
+
+	Stream<T> getAll();
 
 	void listar();
 
