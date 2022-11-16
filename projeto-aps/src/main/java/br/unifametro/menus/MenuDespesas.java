@@ -29,6 +29,7 @@ public class MenuDespesas {
 	private void exibir(Scanner sc) {
 		exibirOpcoes();
 		int opcao = 0;
+		ficarNesteMenu = true;
 
 		try {
 			opcao = sc.nextInt();

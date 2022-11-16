@@ -39,6 +39,7 @@ public class MenuReservas {
 
 		exibirOpcoes();
 		int opcao = 0;
+		ficarNesteMenu = true;
 
 		try {
 			opcao = sc.nextInt();
