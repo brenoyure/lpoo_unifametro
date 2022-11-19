@@ -5,9 +5,15 @@ import java.util.Scanner;
 import java.util.stream.Stream;
 
 /**
- * <p>Representa as funcionalidades básicas que os Serviços de cada {@code Model} (ex. {@code Aluno} deve implementar.<br>
- * Os Menus deverão chamar os métodos desta interface, e não das {@code Dao<T>} diretamente.</p>
- * <p>Para edição, implemente a sub-interface {@code EditavelService<T>}  </p>
+ * <p>Representa as funcionalidades básicas que os Serviços de cada {@code Model} (ex. {@code Aluno} devem implementar.</p>
+ * 
+ * <br>
+ * <p>Os Menus deverão chamar os métodos desta interface, e não as {@code Dao<T>} diretamente.</p>
+ * 
+ * <p>Esta Interface não possui o método de editar, visto que alguns {@code Model}s podem não permitir esta funcionalidade.</p>
+ * 
+ * <p>Para edição, implemente a sub-interface {@code EditavelService<T>}</p>
+ * 
  * @author breno
  * @param <T>
  */
@@ -40,8 +46,17 @@ public interface Service<T> {
 	 */
 	Stream<T> getAll();
 
+	/**
+	 * Imprime no console o {@code toString} de todos os registros<T> da Dao deste Service.
+	 */
 	void listar();
 
+	/**
+	 * <p>
+	 * Você pode sobrescrever este método de maneira que, por exemplo, verifique se o arquivo de persistência existe ou não antes de chamar algum método do Service{@code<T>} 
+	 * </p>
+	 * @return verdadeiro caso o arquivo de persistência da Dao{@code <T>} não exista.
+	 */
 	boolean fileNotExists();
 
 }
