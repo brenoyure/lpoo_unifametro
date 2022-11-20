@@ -115,7 +115,8 @@ public class AlunoService implements EditavelService<Aluno> {
 	 * Busca Aluno(s) por nome ou sobrenome.
 	 * </p>
 	 * 
-	 * Este método verifica qual ou quais aluno(s) possui(em) em seu nome ou sobrenome a
+	 * Este método verifica qual ou quais aluno(s) possui(em) em seu nome ou
+	 * sobrenome a
 	 * sequência de caracteres <strong>(Case Sensitive)</strong>
 	 * fornecida pelo usuário, e em seguida retona este ou estes aluno(s).
 	 * 
@@ -144,14 +145,17 @@ public class AlunoService implements EditavelService<Aluno> {
 			System.err.println("Nenhum Aluno Cadastrado.");
 			return empty();
 		}
+		
 		if (scanner.nextLine() != "")
 			scanner.nextLine();
 
 		System.out.printf("Digite o nome ou sobrenome do Aluno: ");
 		String nome = scanner.nextLine();
-		Stream<Aluno> alunos = alunoDao.findAll().filter(a -> a.getNome().contains(nome));
 
-		if (alunos.count() == 0) {
+		Stream<Aluno> alunos = alunoDao.findAll().filter(a -> a.getNome().contains(nome));
+		long quantidade = alunoDao.findAll().filter(a -> a.getNome().contains(nome)).count();
+
+		if (quantidade == 0) {
 			System.err.println("\nNenhum aluno com o nome informado encontrado.");
 			return empty();
 		}
