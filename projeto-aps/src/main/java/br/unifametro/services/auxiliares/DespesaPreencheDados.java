@@ -1,6 +1,7 @@
 package br.unifametro.services.auxiliares;
 
 import static br.unifametro.modelo.Prioridade.values;
+import static java.lang.Math.abs;
 
 import java.math.BigDecimal;
 import java.util.InputMismatchException;
@@ -32,7 +33,7 @@ public class DespesaPreencheDados implements PreencheDados<Despesa> {
 		try {
 			System.out.printf("\nUse o teclado numérico, para o nível de Prioridade, sendo: \n%s\n => ",
 					exibePrioridades());
-			j = Math.abs(scanner.nextInt());
+			j = abs(scanner.nextInt());
 			prioridade = Prioridade.values()[--j];
 
 		} catch (ArrayIndexOutOfBoundsException e) {

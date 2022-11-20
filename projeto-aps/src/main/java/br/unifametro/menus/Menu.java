@@ -48,6 +48,7 @@ public final class Menu {
 			case 3:
 				despesas.exibirMenu(scanner);
 				break;
+
 			case 0:
 				continuarNoAplicativo = false;
 				break;
@@ -73,9 +74,9 @@ public final class Menu {
 	private void exibirDicas() {
 		System.out.println("\nBoas vindas ao aplicativo República Unifametro");
 		System.out.println(
-				"DICAS para uma boa experiência ao cadastrar ou editar os registros, para: ");
+				"DICAS para uma boa experiência ao cadastrar ou editar os registros");
 		System.out.println(
-				"\n => Campos texto, como Nome: Favor não utilizar o ; visto que este é utilizado ao salvar os dados no arquivo .txt");
+				"\n => Campos texto, como Nome ou E-mail: Favor não utilizar o ; visto que este é utilizado ao salvar os dados no arquivo .txt");
 		System.out.println(
 				"\n => Valores monetários, separe o decimal por vírgula, por exemplo, utilize ' R$5,00 ' ao invés de ' R$ 5.00 '.");
 	}

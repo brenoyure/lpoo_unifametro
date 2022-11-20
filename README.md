@@ -13,7 +13,7 @@ exemplo AlunoDao, contém os registros dos alunos.
 Services -> tem os serviços para cada modelo: Cadastrar, Editar, Buscar, Listar e Deletar.
 os services, "chamam" os métodos das Daos, para recuperar informações ou alterar os TXTs.
 
-Services.Auxiliares -> algumas classes e interfaces auxiliares, para os métodos de pedir os dados de algum modelo, fiz isso para evitar de "encher" as classes Services, visto que os dados viram do teclado.
+Services.Auxiliares -> algumas classes e interfaces auxiliares, para os métodos de pedir os dados de algum modelo e validações, fiz isso para evitar de "encher" as classes Services, visto que os dados viram do teclado.
 
 Testes -> algumas classes de testes, que já recebem dados do usuário, via teclado, utilizei quando estava começando o projeto, para chamar os métodos dos Services.
 
@@ -23,6 +23,4 @@ Classe RepublicaApplication -> resposável por iniciar o aplicativo.
 
 * Ao cadastrar uma nova reserva, o sistema já calcula o valor da contribuição do aluno.
 
-- não implementados ainda -
-* Modelo de Despesas FIXAS
-* Blocos try_catch para evitar exceções ao Cadastrar ou Editar algum Modelo. através dos métodos getDados() dos services-auxiliares.
+* Não implementados ainda: Modelo de Despesas FIXAS com Data de Pagamento

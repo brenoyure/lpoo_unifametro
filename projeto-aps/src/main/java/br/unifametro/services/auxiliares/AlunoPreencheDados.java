@@ -8,8 +8,16 @@ import java.util.Scanner;
 
 import br.unifametro.modelo.Aluno;
 import br.unifametro.services.interfaces.auxiliares.PreencheDadosComEdicao;
+import br.unifametro.services.interfaces.auxiliares.ValidacaoDadosEditaveis;
 
 public class AlunoPreencheDados implements PreencheDadosComEdicao<Aluno> {
+
+    private ValidacaoDadosEditaveis<Aluno> validacoes;
+
+    public AlunoPreencheDados() {
+        if (validacoes == null)
+            validacoes = new AlunoValidaDados();
+    }
 
     @Override
     public Aluno getDados(Scanner keyboardInput) {
@@ -50,7 +58,7 @@ public class AlunoPreencheDados implements PreencheDadosComEdicao<Aluno> {
 
         }
 
-        return new Aluno(id, nome, email, rendimentos);
+        return validacoes.validar(new Aluno(id, nome, email, rendimentos));
     }
 
     @Override
@@ -66,7 +74,7 @@ public class AlunoPreencheDados implements PreencheDadosComEdicao<Aluno> {
         System.out.print("\nPor fim, o total de rendimentos: R$");
         BigDecimal rendimentos = keyboardInput.nextBigDecimal();
 
-        return new Aluno(nome, email, rendimentos);
+        return validacoes.validarEdicao(new Aluno(nome, email, rendimentos));
     }
 
 }

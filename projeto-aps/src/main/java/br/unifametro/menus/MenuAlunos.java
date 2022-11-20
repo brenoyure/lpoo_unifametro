@@ -3,7 +3,6 @@ package br.unifametro.menus;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
-import br.unifametro.persistencia.AlunoDao;
 import br.unifametro.services.AlunoService;
 
 public final class MenuAlunos {
@@ -13,7 +12,7 @@ public final class MenuAlunos {
 	private boolean ficarNesteMenu = true;
 
 	public MenuAlunos() {
-		this.servico = new AlunoService(new AlunoDao());
+		this.servico = new AlunoService();
 	}
 
 	public void exibirMenu(Scanner sc) {
@@ -50,7 +49,7 @@ public final class MenuAlunos {
 				break;
 
 			case 4:
-				System.out.println("DICA: Digite começando com letra maiúscula.");
+				System.out.println("DICA: Começando com letra maiúscula, ");
 				servico.getByName(sc).forEach(System.out::println);
 				break;
 
@@ -79,7 +78,7 @@ public final class MenuAlunos {
 		System.out.printf("\n 1 - Cadastrar Novo Aluno");
 		System.out.printf("\n 2 - Editar cadastro de Aluno");
 		System.out.printf("\n 3 - Pesquisar um aluno por ID");
-		System.out.printf("\n 4 - Pesquisar um aluno por Nome");
+		System.out.printf("\n 4 - Pesquisa por Nome ou sobrenome");
 		System.out.printf("\n 5 - Listar Alunos");
 		System.out.printf("\n 6 - Excluir um aluno, por ID");
 		System.out.printf("\n 0 - Sair");

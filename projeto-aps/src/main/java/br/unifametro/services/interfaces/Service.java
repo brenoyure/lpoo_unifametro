@@ -7,7 +7,6 @@ import java.util.stream.Stream;
 /**
  * <p>Representa as funcionalidades básicas que os Serviços de cada {@code Model} (ex. {@code Aluno} devem implementar.</p>
  * 
- * <br>
  * <p>Os Menus deverão chamar os métodos desta interface, e não as {@code Dao<T>} diretamente.</p>
  * 
  * <p>Esta Interface não possui o método de editar, visto que alguns {@code Model}s podem não permitir esta funcionalidade.</p>

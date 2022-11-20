@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 import br.unifametro.modelo.Aluno;
 import br.unifametro.modelo.Reserva;
-import br.unifametro.persistencia.AlunoDao;
 import br.unifametro.persistencia.ReservaDao;
 import br.unifametro.persistencia.interfaces.Dao;
 import br.unifametro.services.AlunoService;
@@ -14,7 +13,6 @@ import br.unifametro.services.interfaces.Service;
 
 public final class MenuReservas {
 
-	private final Dao<Aluno> alunoDao;
 	private final Service<Aluno> alunoServices;
 	private final Dao<Reserva> reservaDao;
 	private final Service<Reserva> servico;
@@ -22,8 +20,7 @@ public final class MenuReservas {
 	private boolean ficarNesteMenu = true;
 
 	public MenuReservas() {
-		this.alunoDao = new AlunoDao();
-		this.alunoServices = new AlunoService(alunoDao);
+		this.alunoServices = new AlunoService();
 		this.reservaDao = new ReservaDao(alunoServices);
 		this.servico = new ReservasService(reservaDao, alunoServices);
 	}

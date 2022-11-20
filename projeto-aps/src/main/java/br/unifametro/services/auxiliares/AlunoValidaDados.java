@@ -21,7 +21,7 @@ public class AlunoValidaDados implements ValidacaoDadosEditaveis<Aluno> {
         String email = aluno.getEmail();
 
         if (alunoJaExiste(id)) {
-            System.err.println("\nJá existe um aluno com o ID informado. Cadastro não realizado.");
+            System.err.printf("\nJá existe um aluno com o ID informado. Cadastro não realizado.\n");
             return null;
         }
 
@@ -42,7 +42,7 @@ public class AlunoValidaDados implements ValidacaoDadosEditaveis<Aluno> {
 
         if (dadosInvalidos(nome, email)) {
             System.err.println("\nNome ou Email estão em um formato inválido.");
-            System.out.println("Verifique se o nome começa com uma letra maiúscula e se o e-mail contém o @.");
+            System.out.println("Verifique se o Nome começa com uma letra maiúscula e/ou se o E-mail contém o @.");
             return null;
         }
 
@@ -54,7 +54,7 @@ public class AlunoValidaDados implements ValidacaoDadosEditaveis<Aluno> {
     }
 
     private boolean dadosInvalidos(String nome, String email) {
-        return !(nomeValido(nome) && !emailValido(email));
+        return !(nomeValido(nome) && emailValido(email));
     }
 
     private boolean nomeValido(String nome) {
@@ -62,7 +62,7 @@ public class AlunoValidaDados implements ValidacaoDadosEditaveis<Aluno> {
     }
 
     private boolean emailValido(String email) {
-        return !(email.contains(";")) && email.contains("@");
+        return !email.contains(";") && email.contains("@");
     }
 
 }

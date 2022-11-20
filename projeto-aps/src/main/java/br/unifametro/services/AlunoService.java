@@ -12,38 +12,32 @@ import br.unifametro.persistencia.AlunoDao;
 import br.unifametro.persistencia.interfaces.Dao;
 import br.unifametro.persistencia.interfaces.DaoEditavel;
 import br.unifametro.services.auxiliares.AlunoPreencheDados;
-import br.unifametro.services.auxiliares.AlunoValidaDados;
 import br.unifametro.services.interfaces.EditavelService;
 import br.unifametro.services.interfaces.auxiliares.PreencheDadosComEdicao;
-import br.unifametro.services.interfaces.auxiliares.ValidacaoDadosEditaveis;
 
 public class AlunoService implements EditavelService<Aluno> {
 
 	private final DaoEditavel<Aluno> alunoDao;
 	private final PreencheDadosComEdicao<Aluno> dadosAluno;
-	private final ValidacaoDadosEditaveis<Aluno> validacoesService;
 
 	public AlunoService() {
 		this.alunoDao = new AlunoDao();
 		this.dadosAluno = new AlunoPreencheDados();
-		this.validacoesService = new AlunoValidaDados();
 	}
 
 	public AlunoService(Dao<Aluno> alunoDao) {
 		this.alunoDao = (DaoEditavel<Aluno>) alunoDao;
 		this.dadosAluno = new AlunoPreencheDados();
-		this.validacoesService = new AlunoValidaDados();
 	}
 
 	public AlunoService(Dao<Aluno> alunoDao, PreencheDadosComEdicao<Aluno> novoAluno) {
 		this.alunoDao = (DaoEditavel<Aluno>) alunoDao;
 		this.dadosAluno = novoAluno;
-		this.validacoesService = new AlunoValidaDados();
 	}
 
 	@Override
 	public void cadastrar(Scanner scanner) {
-		Aluno dadosNovoAluno = validacoesService.validar(dadosAluno.getDados(scanner));
+		Aluno dadosNovoAluno = dadosAluno.getDados(scanner);
 		if (dadosNovoAluno == null)
 			return;
 		alunoDao.salvar(dadosNovoAluno);
@@ -62,7 +56,7 @@ public class AlunoService implements EditavelService<Aluno> {
 		}
 
 		System.out.printf("Editando dados de: %s", aluno.get());
-		Aluno novosDados = validacoesService.validarEdicao(dadosAluno.getDadosEdicao(scanner));
+		Aluno novosDados = dadosAluno.getDadosEdicao(scanner);
 
 		if (novosDados == null)
 			return;

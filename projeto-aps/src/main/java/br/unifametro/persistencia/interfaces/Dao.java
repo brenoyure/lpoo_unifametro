@@ -3,6 +3,8 @@ package br.unifametro.persistencia.interfaces;
 import java.util.stream.Stream;
 
 /**
+ * <p>Data Access Object Interface</p>
+ * 
  *<p>Representa o contexto de persistência, geralmente um arquivo '.txt' .</p>
  * <br>
  * <p>Os Menus <strong>NÃO</strong> devem invocar os métodos das interfaces Daos diretamente, e sim, utilizar as Services.</p>

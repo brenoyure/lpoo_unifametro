@@ -17,14 +17,13 @@ public class Relatorio {
 	public static void main(String[] args) {
 
 		Dao<Aluno> alunosDao = new AlunoDao();
-		Service<Aluno> alunoService = new AlunoService(alunosDao, null);
+		Service<Aluno> alunoService = new AlunoService();
 		Dao<Reserva> reservasDao = new ReservaDao(alunoService);
 
 		List<Aluno> alunos = alunosDao.findAll().collect(toList());
 		List<Aluno> pagos = reservasDao.findAll().map(Reserva::getAluno).toList();
 
 		alunos.removeAll(pagos);
-
 		alunos.forEach(System.out::println);
 
 	}
