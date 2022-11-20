@@ -1,0 +1,31 @@
+Problema com Caracteres
+
+Ao Buscar ou Cadastrar Alunos ou Despesas
+
+AVISO ao Rodar o Projeto pelo Windows: 
+
+	Pelo VSCode ou diretamente pelo Windows PowerShell ou Prompt de Comando (CMD),
+	
+	### Ao buscar um Aluno ou Despesa ####
+
+		Pode acontecer de, por exemplo, um aluno que possui ascento em alguma letra do nome ou no sobrenome não ser encontrado, 
+		ao executar algum método de busca, como o getByName() do Serviço de Alunos.
+
+		Acredito ser um problema da codificação de caracteres do Windows, mesmo forçando para UTF-8 nos Scanners, o problema persiste.
+	
+		Para contornar o problema você pode digitar o nome ou sobrenome do aluno que está procurando, porém, omitindo a letra que possui o ascento. 
+		Por exemplo, ao invés de 'José' você digitaria 'Jos' <= sem as aspas, claro.
+	
+	#### Ao Cadastrar um Aluno ou Despesa  ####
+		
+		Ao digitar o nome de algum aluno ou descrição de uma despesa, por exemplo, e alguma letra possuir ascento, o VSCode ou PowerShell
+		bugem a letra, ficando um ponto de interrogação, por exemplo, ao Salvar um Aluno, ao invés de ficar 'João', acaba ficando 'Jo?o'.
+
+
+Por que este problema acontece também no VSCode (Windows) e não apenas no CMD ou PowerShell ?
+
+	=> Simples, pois para rodar as classes do Java, o VSCode utiliza internamente o PowerShell para isso, ao chamar, por exemplo, o 'java.exe --Nome-Da-Classe-Compilada'.
+
+Rodando o projeto dentro do Eclipse, não acontece nenhum desses problemas, inclusive a busca por um aluno, por exemplo, que possua ascento no nome, retorna os resultados normalmente.
+
+ 

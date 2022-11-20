@@ -1,6 +1,6 @@
 package br.unifametro.menus;
 
-import java.util.NoSuchElementException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import br.unifametro.services.AlunoService;
@@ -29,7 +29,7 @@ public final class MenuAlunos {
 
 		try {
 			opcao = sc.nextInt();
-		} catch (NoSuchElementException e) {
+		} catch (InputMismatchException e) {
 			System.err.printf("Você digitou '%s', apenas números são permitidos.", sc.next());
 			exibirMenu(sc);
 		}
