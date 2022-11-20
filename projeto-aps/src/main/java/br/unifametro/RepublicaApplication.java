@@ -12,11 +12,19 @@ public final class RepublicaApplication {
     private final Scanner keyboardInput;
     private final Menu menuPrincipal;
 
+    /**
+     * Classe para iniciar por iniciar o aplicativo.
+     * @param keyboardInput entrada via teclado para interação do usuário.
+     * @param menuPrincipal	instancia do Menu Principal do Aplicativo.
+     */
     public RepublicaApplication(Scanner keyboardInput, Menu menuPrincipal) {
         this.keyboardInput = keyboardInput;
         this.menuPrincipal = menuPrincipal;
     }
 
+    /**
+     * Inicia o aplicativo RepublicaApplication
+     */
     private void run() {
         this.menuPrincipal.exibir(keyboardInput);
     }
