@@ -1,5 +1,8 @@
 package br.unifametro.services;
 
+import static java.util.stream.Stream.empty;
+
+import java.util.InputMismatchException;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Stream;
@@ -35,6 +38,8 @@ public class AlunoService implements EditavelService<Aluno> {
 	@Override
 	public void cadastrar(Scanner scanner) {
 		Aluno dadosNovoAluno = dadosAluno.getDados(scanner);
+		if (dadosNovoAluno == null)
+			return;
 		alunoDao.salvar(dadosNovoAluno);
 	}
 
@@ -82,9 +87,19 @@ public class AlunoService implements EditavelService<Aluno> {
 			return Optional.empty();
 		}
 
-		System.out.printf("Digite o ID do Aluno: ");
-		Integer id = scanner.nextInt();
-		return alunoDao.findAll().filter(a -> a.getId().equals(id)).findFirst();
+		Integer id;
+
+		try {
+			System.out.printf("Digite o ID do Aluno: ");
+			id = scanner.nextInt();
+			return alunoDao.findAll().filter(a -> a.getId().equals(id)).findFirst();
+
+		} catch (InputMismatchException e) {
+			System.err.printf("\nVocê digitou '%s', para o ID apenas números são permitidos.\n", scanner.next());
+			System.err.printf("\nTente novamente.\n");
+			return Optional.empty();
+		}
+
 	}
 
 	public Optional<Aluno> getById(Integer id) {
@@ -95,16 +110,54 @@ public class AlunoService implements EditavelService<Aluno> {
 		return alunoDao.findAll().filter(a -> a.getId().equals(id)).findFirst();
 	}
 
-	public Optional<Aluno> getByName(Scanner scanner) {
+	/**
+	 * <p>
+	 * Busca Aluno(s) por nome ou sobrenome.
+	 * </p>
+	 * 
+	 * Este método verifica qual ou quais aluno(s) possui(em) em seu nome ou sobrenome a
+	 * sequência de caracteres <strong>(Case Sensitive)</strong>
+	 * fornecida pelo usuário, e em seguida retona este ou estes aluno(s).
+	 * 
+	 * <p>
+	 * <strong>AVISO Para utilizadores do Windows: </strong>Ao executar este método
+	 * pelo VSCode ou caso esteja rodando o projeto diretamente pelo Windows
+	 * PowerShell ou Prompt de Comando (CMD),
+	 * pode acontecer de um aluno que possui ascento em alguma letra do nome ou no
+	 * sobrenome não ser encontrado. Acredito ser um problema da codificação de
+	 * caracteres do Windows, mesmo forçando para UTF-8 nos Scanners, o problema
+	 * persiste.
+	 * </p>
+	 * 
+	 * <p>
+	 * Para contornar o problema você pode digitar o nome ou sobrenome do aluno que
+	 * está procurando, porém, omitindo a letra que possui o ascento.
+	 * Por exemplo, ao invés de 'José' você digitaria 'Jos' <= sem as aspas, claro.
+	 * </p>
+	 * 
+	 * @param scanner entrada do teclado
+	 * @return um {@code Optional<Aluno>}
+	 */
+	public Stream<Aluno> getByName(Scanner scanner) {
+
 		if (fileNotExists()) {
 			System.err.println("Nenhum Aluno Cadastrado.");
-			return Optional.empty();
+			return empty();
 		}
 		if (scanner.nextLine() != "")
 			scanner.nextLine();
-		System.out.printf("Digite o nome do Aluno: ");
+
+		System.out.printf("Digite o nome ou sobrenome do Aluno: ");
 		String nome = scanner.nextLine();
-		return alunoDao.findAll().filter(a -> a.getNome().startsWith(nome)).findFirst();
+		Stream<Aluno> alunos = alunoDao.findAll().filter(a -> a.getNome().contains(nome));
+
+		if (alunos.count() == 0) {
+			System.err.println("\nNenhum aluno com o nome informado encontrado.");
+			return empty();
+		}
+
+		return alunos;
+
 	}
 
 	@Override

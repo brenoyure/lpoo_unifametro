@@ -13,57 +13,82 @@ import br.unifametro.persistencia.DespesasDao;
 import br.unifametro.persistencia.interfaces.Dao;
 
 /**
- * {@code Service} responsável por calcular quanto cada aluno deve contribuir para as
- * Despesas do mês.
+ * {@code Service} responsável por calcular quanto cada aluno deve contribuir
+ * para as Despesas do mês.
  */
 public final class DivisaoDespesas {
 
-    private Dao<Aluno> alunosDao;
-    private Dao<Despesa> despesasDao;
+	private Dao<Aluno> alunosDao;
+	private Dao<Despesa> despesasDao;
 
-    public DivisaoDespesas() {
-        this.alunosDao = new AlunoDao();
-        this.despesasDao = new DespesasDao();
-    }
+	public DivisaoDespesas() {
+		this.alunosDao = new AlunoDao();
+		this.despesasDao = new DespesasDao();
+	}
 
-    /**
-     * Calcula quanto cada um deve contribuir para cobrir as despesas do mês.
-     * 
-     * @return BigDecimal quanto cada aluno deve contribuir para as Despesas do mês.
-     */
-    public BigDecimal getDivisaoIgualitaria() {
-        return getValorTotalDespesas().divide(valueOf(getQuantidadeAlunos()), HALF_UP);
-    }
+	/**
+	 * Calcula quanto cada um deve contribuir para cobrir as despesas do mês.
+	 * 
+	 * @return quanto cada aluno deve contribuir para as despesas do mês.
+	 */
+	private BigDecimal getDivisaoIgualitaria() {
+		return getValorTotalDespesas().divide(valueOf(getQuantidadeAlunos()), HALF_UP);
+	}
 
-    public String getResumoDivisao() {
-        return format(
-                "Para cobrir as despesas do mês, cada um dos %d alunos, deve contribuir com R$%s, de seus rendimentos.",
-                getQuantidadeAlunos(), getDivisaoIgualitaria());
-    }
+	/**
+	 * Imprime o resumo das despesas do mês.
+	 */
+	public void resumir() {
+		if (!despesasDao.fileExists()) {
+			System.err.println("Nenhuma Despesa cadastrada no mês atual.");
+			return;
+		}
 
-    /**
-     * 
-     * @return Quantidade de Alunos da República.
-     */
-    public Long getQuantidadeAlunos() {
-        return this.alunosDao.findAll().count();
-    }
+		System.out.printf("\n%s\n", getResumo());
 
-    /**
-     * 
-     * @return Quantidade de Despesas.
-     */
-    public Long getQuantidadeDespesas() {
-    	return this.despesasDao.findAll().count();
-    }
+	}
 
-    /**
-     * Soma os valores de todas as despesas do mês e devolve um BigDecimal.
-     * <br>
-     * @return Valor total de Despesas do mês.
-     */
-    public BigDecimal getValorTotalDespesas() {
-        return valueOf(despesasDao.findAll().map(Despesa::getValor).mapToDouble(BigDecimal::doubleValue).sum()).setScale(2, HALF_UP);
-    }
+	private String getResumo() {
+
+		StringBuilder sb = new StringBuilder();
+		Long qtdDespesas = this.getQuantidadeDespesas();
+		BigDecimal vTotal = this.getValorTotalDespesas();
+		BigDecimal divisao = this.getDivisaoIgualitaria();
+
+		sb.append("\n########### Resumo do Mês Atual ############\n");
+		sb.append(format("\nTotal de Despesas: %d.\n", qtdDespesas));
+		sb.append(format("\nValor total: R$%s.\n", vTotal));
+		sb.append(format("\nCada aluno deve contribuir com: R$%s\n", divisao));
+		sb.append("\n############################################\n");
+
+		return sb.toString();
+
+	}
+
+	/**
+	 * 
+	 * @return Quantidade de Alunos da República.
+	 */
+	private Long getQuantidadeAlunos() {
+		return this.alunosDao.findAll().count();
+	}
+
+	/**
+	 * 
+	 * @return Quantidade de Despesas.
+	 */
+	private Long getQuantidadeDespesas() {
+		return this.despesasDao.findAll().count();
+	}
+
+	/**
+	 * Soma os valores de todas as despesas do mês e devolve um BigDecimal. <br>
+	 * 
+	 * @return Valor total de Despesas do mês.
+	 */
+	private BigDecimal getValorTotalDespesas() {
+		return valueOf(despesasDao.findAll().map(Despesa::getValor).mapToDouble(BigDecimal::doubleValue).sum())
+				.setScale(2, HALF_UP);
+	}
 
 }

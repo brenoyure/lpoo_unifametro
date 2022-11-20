@@ -1,8 +1,5 @@
 package br.unifametro.menus;
 
-import static java.lang.String.format;
-
-import java.math.BigDecimal;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -13,15 +10,15 @@ import br.unifametro.services.auxiliares.DespesaPreencheDados;
 import br.unifametro.services.auxiliares.DivisaoDespesas;
 import br.unifametro.services.interfaces.EditavelService;
 
-public class MenuDespesas {
+public final class MenuDespesas {
 
 	private final EditavelService<Despesa> servico;
-	private final DivisaoDespesas divisaoService;
+	private final DivisaoDespesas servicoDivisao;
 	private boolean ficarNesteMenu = true;
 
 	public MenuDespesas() {
 		this.servico = new DespesasService(new DespesasDao(), new DespesaPreencheDados());
-		this.divisaoService = new DivisaoDespesas();
+		this.servicoDivisao = new DivisaoDespesas();
 	}
 
 	public void exibirMenu(Scanner sc) {
@@ -49,7 +46,7 @@ public class MenuDespesas {
 			break;
 
 		case 2:
-			System.out.println(getResumo());
+			servicoDivisao.resumir();
 			break;
 
 		case 3:
@@ -92,27 +89,6 @@ public class MenuDespesas {
 		System.out.printf("\n 0 - Sair");
 
 		System.out.printf("\nEscolha uma opção => ");
-	}
-
-	private String getResumo() {
-
-		if (servico.fileNotExists()) {
-			System.err.println("\nNão há despesas cadastradas para o mês atual.\n");
-			return null;
-		}
-
-		StringBuilder sb = new StringBuilder();
-		Long qtdDespesas = divisaoService.getQuantidadeDespesas();
-		BigDecimal vTotal = divisaoService.getValorTotalDespesas();
-		BigDecimal divisao = divisaoService.getDivisaoIgualitaria();
-
-		sb.append("\n########### Resumo do Mês Atual ############\n");
-		sb.append(format("\nTotal de Despesas: %d.\n", qtdDespesas));
-		sb.append(format("\nValor total: R$%s.\n", vTotal));
-		sb.append(format("\nCada aluno deve contribuir com: R$%s\n", divisao));
-		sb.append("\n############################################\n");
-		return sb.toString();
-
 	}
 
 }

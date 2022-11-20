@@ -1,12 +1,12 @@
 package br.unifametro.menus;
 
-import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import br.unifametro.persistencia.AlunoDao;
 import br.unifametro.services.AlunoService;
 
-public class MenuAlunos {
+public final class MenuAlunos {
 
 	private final AlunoService servico;
 
@@ -30,46 +30,45 @@ public class MenuAlunos {
 
 		try {
 			opcao = sc.nextInt();
-		} catch (InputMismatchException e) {
+		} catch (NoSuchElementException e) {
 			System.err.printf("Você digitou '%s', apenas números são permitidos.", sc.next());
 			exibirMenu(sc);
 		}
 
 		switch (opcao) {
-		case 1:
-			servico.cadastrar(sc);
-			break;
+			case 1:
+				servico.cadastrar(sc);
+				break;
 
-		case 2:
-			servico.editar(sc);
-			break;
+			case 2:
+				servico.editar(sc);
+				break;
 
-		case 3:
-			servico.get(sc).ifPresentOrElse(a -> System.out.printf("\n%s\n", a),
-					() -> System.err.println("Aluno com o ID informado não encontrado."));
-			break;
+			case 3:
+				servico.get(sc).ifPresentOrElse(a -> System.out.printf("\n%s\n", a),
+						() -> System.err.printf("\nAluno com o ID informado não encontrado.\n"));
+				break;
 
-		case 4:
-			System.out.println("DICA: Digite o Nome ou Sobrenome começando com letra maiúscula.");
-			servico.getByName(sc).ifPresentOrElse(System.out::println,
-					() -> System.err.println("Aluno com o nome informado não encontrado."));
-			break;
+			case 4:
+				System.out.println("DICA: Digite começando com letra maiúscula.");
+				servico.getByName(sc).forEach(System.out::println);
+				break;
 
-		case 5:
-			servico.listar();
-			break;
+			case 5:
+				servico.listar();
+				break;
 
-		case 6:
-			servico.excluir(sc);
-			break;
+			case 6:
+				servico.excluir(sc);
+				break;
 
-		case 0:
-			ficarNesteMenu = false;
-			break;
+			case 0:
+				ficarNesteMenu = false;
+				break;
 
-		default:
-			System.err.println("Opção não identificada. Tente novamente.");
-			break;
+			default:
+				System.err.println("Opção não identificada. Tente novamente.");
+				break;
 		}
 
 	}

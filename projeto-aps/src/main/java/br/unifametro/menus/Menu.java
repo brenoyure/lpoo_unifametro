@@ -3,7 +3,7 @@ package br.unifametro.menus;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Menu {
+public final class Menu {
 
 	private MenuAlunos alunos;
 	private MenuReservas reservas;
@@ -50,7 +50,6 @@ public class Menu {
 				break;
 			case 0:
 				continuarNoAplicativo = false;
-				System.out.println("Saindo...Obrigado por utilizar.");
 				break;
 
 			default:

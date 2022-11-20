@@ -1,7 +1,7 @@
 package br.unifametro.teste.Alunos;
 
-import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 import br.unifametro.modelo.Aluno;
 import br.unifametro.persistencia.AlunoDao;
@@ -15,9 +15,9 @@ public class BuscaAlunoPorNome {
 		AlunoService service = new AlunoService(dao);
 		Scanner sc = new Scanner(System.in);
 
-		Optional<Aluno> aluno = service.getByName(sc);
+		Stream<Aluno> aluno = service.getByName(sc);
 
-		aluno.ifPresentOrElse(System.out::println, () -> System.err.println("Aluno não encontrado."));
+		aluno.forEach(System.out::println);
 
 	}
 

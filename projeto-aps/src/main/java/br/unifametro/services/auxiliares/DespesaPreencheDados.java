@@ -23,7 +23,7 @@ public class DespesaPreencheDados implements PreencheDados<Despesa> {
 		System.out.printf("\nInforme a categoria: ");
 		String categoria = scanner.nextLine();
 
-		System.out.printf("\nUse o teclado numérico, para o nível de Prioridade,\nsendo: %s\n => ", exibePrioridades());
+		System.out.printf("\nUse o teclado numérico, para o nível de Prioridade, sendo: \n%s\n => ", exibePrioridades());
 		int j = scanner.nextInt();
 		Prioridade prioridade = Prioridade.values()[--j];
 

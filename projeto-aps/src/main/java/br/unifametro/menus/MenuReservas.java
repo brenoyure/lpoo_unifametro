@@ -12,7 +12,7 @@ import br.unifametro.services.AlunoService;
 import br.unifametro.services.ReservasService;
 import br.unifametro.services.interfaces.Service;
 
-public class MenuReservas {
+public final class MenuReservas {
 
 	private final Dao<Aluno> alunoDao;
 	private final Service<Aluno> alunoServices;
