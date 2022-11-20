@@ -13,7 +13,7 @@ import br.unifametro.persistencia.DespesasDao;
 import br.unifametro.persistencia.interfaces.Dao;
 
 /**
- * {@code Service} responsável por calcular quanto cada aluno deve contribuir
+ * Responsável por calcular quanto cada aluno deve contribuir
  * para as Despesas do mês.
  */
 public final class DivisaoDespesas {
@@ -39,6 +39,7 @@ public final class DivisaoDespesas {
 	 * Imprime o resumo das despesas do mês.
 	 */
 	public void resumir() {
+		
 		if (!despesasDao.fileExists()) {
 			System.err.println("Nenhuma Despesa cadastrada no mês atual.");
 			return;

@@ -4,3 +4,4 @@
 457 ; José Lira ; jose@unifametro ; 1200.00
 466 ; Lucibere Santos ; lucibere@dnocs.gov.br ; 2800.00
 742 ; Guilherme Frota ; guilherme.frota@aluno.unifametro.edu.br ; 1500.00
+946 ; Nathanael Frota ; nathan.frota@aluno.unifametro.edu.br ; 1000.00

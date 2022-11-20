@@ -12,32 +12,38 @@ import br.unifametro.persistencia.AlunoDao;
 import br.unifametro.persistencia.interfaces.Dao;
 import br.unifametro.persistencia.interfaces.DaoEditavel;
 import br.unifametro.services.auxiliares.AlunoPreencheDados;
+import br.unifametro.services.auxiliares.AlunoValidaDados;
 import br.unifametro.services.interfaces.EditavelService;
 import br.unifametro.services.interfaces.auxiliares.PreencheDadosComEdicao;
+import br.unifametro.services.interfaces.auxiliares.ValidacaoDadosEditaveis;
 
 public class AlunoService implements EditavelService<Aluno> {
 
 	private final DaoEditavel<Aluno> alunoDao;
 	private final PreencheDadosComEdicao<Aluno> dadosAluno;
+	private final ValidacaoDadosEditaveis<Aluno> validacoesService;
 
 	public AlunoService() {
 		this.alunoDao = new AlunoDao();
 		this.dadosAluno = new AlunoPreencheDados();
+		this.validacoesService = new AlunoValidaDados();
 	}
 
 	public AlunoService(Dao<Aluno> alunoDao) {
 		this.alunoDao = (DaoEditavel<Aluno>) alunoDao;
 		this.dadosAluno = new AlunoPreencheDados();
+		this.validacoesService = new AlunoValidaDados();
 	}
 
 	public AlunoService(Dao<Aluno> alunoDao, PreencheDadosComEdicao<Aluno> novoAluno) {
 		this.alunoDao = (DaoEditavel<Aluno>) alunoDao;
 		this.dadosAluno = novoAluno;
+		this.validacoesService = new AlunoValidaDados();
 	}
 
 	@Override
 	public void cadastrar(Scanner scanner) {
-		Aluno dadosNovoAluno = dadosAluno.getDados(scanner);
+		Aluno dadosNovoAluno = validacoesService.validar(dadosAluno.getDados(scanner));
 		if (dadosNovoAluno == null)
 			return;
 		alunoDao.salvar(dadosNovoAluno);
@@ -56,9 +62,12 @@ public class AlunoService implements EditavelService<Aluno> {
 		}
 
 		System.out.printf("Editando dados de: %s", aluno.get());
-		Aluno novosDados = dadosAluno.getDadosEdicao(scanner);
-		novosDados.setId(aluno.get().getId());
+		Aluno novosDados = validacoesService.validarEdicao(dadosAluno.getDadosEdicao(scanner));
 
+		if (novosDados == null)
+			return;
+
+		novosDados.setId(aluno.get().getId());
 		alunoDao.editar(aluno.get(), novosDados);
 
 	}
@@ -87,11 +96,9 @@ public class AlunoService implements EditavelService<Aluno> {
 			return Optional.empty();
 		}
 
-		Integer id;
-
 		try {
 			System.out.printf("Digite o ID do Aluno: ");
-			id = scanner.nextInt();
+			Integer id = scanner.nextInt();
 			return alunoDao.findAll().filter(a -> a.getId().equals(id)).findFirst();
 
 		} catch (InputMismatchException e) {
@@ -137,7 +144,7 @@ public class AlunoService implements EditavelService<Aluno> {
 	 * </p>
 	 * 
 	 * @param scanner entrada do teclado
-	 * @return um {@code Optional<Aluno>}
+	 * @return {@code Stream<Aluno>}
 	 */
 	public Stream<Aluno> getByName(Scanner scanner) {
 
@@ -145,7 +152,7 @@ public class AlunoService implements EditavelService<Aluno> {
 			System.err.println("Nenhum Aluno Cadastrado.");
 			return empty();
 		}
-		
+
 		if (scanner.nextLine() != "")
 			scanner.nextLine();
 

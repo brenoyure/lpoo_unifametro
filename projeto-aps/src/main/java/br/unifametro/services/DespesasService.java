@@ -22,6 +22,8 @@ public class DespesasService implements EditavelService<Despesa> {
 	@Override
 	public void cadastrar(Scanner scanner) {
 		Despesa despesa = novaDespesa.getDados(scanner);
+		if (despesa == null)
+			return;
 		dao.salvar(despesa);
 	}
 

@@ -10,13 +10,13 @@ import java.util.stream.Stream;
  * <p>Esta Interface não possui o método de editar, visto que alguns {@code Model}s podem não permitir esta funcionalidade.</p>
  * 
  * <p>Para edição, implemente a sub-interface {@code DaoEditavel<T>}</p>
- * @param T o tipo que será persistido.
+ * @param <T> o tipo que será persistido.
  */
 public interface Dao<T> {
 
 	/**
 	 * Persiste um novo {@code t} no arquivo.
-	 * @param t
+	 * @param <T>
 	 */
 	void salvar(T t);
 
@@ -24,7 +24,7 @@ public interface Dao<T> {
 	 * <p>Exclui um {@code <T>} existente.</p>
 	 * <p>Visto que para excluir é necessário existir pelo menos um registro, 
 	 * recomenda-se verificar antes se o arquivo existe, por exemplo com o {@code fileExists()} antes de invocar este método.</p>
-	 * @param t
+	 * @param <T>
 	 */
 	void excluir(T t);
 

@@ -8,8 +8,8 @@ package br.unifametro.modelo;
 public interface Model {
 
 	/**
-	 * String utilizada para representar o cadastro de um tipo {@code Model} em um arquivo.
-	 * @return String representação do cadastro em arquivo.
+	 * String utilizada para representar um cadastro, por exemplo de um aluno, em arquivo.
+	 * @return representação de um cadastro em arquivo.
 	 */
 	String toFile();
 

@@ -1,6 +1,9 @@
 package br.unifametro.services.auxiliares;
 
+import static br.unifametro.modelo.Prioridade.values;
+
 import java.math.BigDecimal;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import br.unifametro.modelo.Despesa;
@@ -23,16 +26,37 @@ public class DespesaPreencheDados implements PreencheDados<Despesa> {
 		System.out.printf("\nInforme a categoria: ");
 		String categoria = scanner.nextLine();
 
-		System.out.printf("\nUse o teclado numérico, para o nível de Prioridade, sendo: \n%s\n => ", exibePrioridades());
-		int j = scanner.nextInt();
-		Prioridade prioridade = Prioridade.values()[--j];
+		int j = 0;
+		Prioridade prioridade = null;
+
+		try {
+			System.out.printf("\nUse o teclado numérico, para o nível de Prioridade, sendo: \n%s\n => ",
+					exibePrioridades());
+			j = Math.abs(scanner.nextInt());
+			prioridade = Prioridade.values()[--j];
+
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.err.printf("\nApenas as opções de 1 a %d são permitidas.\n", values().length);
+			return null;
+		}
+
+		catch (InputMismatchException e) {
+			System.err.printf("\nVocê digitou '%s', apenas números são permitidos.\n", scanner.next());
+			return null;
+		}
 
 		if (scanner.nextLine() != "")
 			scanner.nextLine();
 
-		System.out.printf("\nDICA: Ao digitar, separe o decimal com vírgula, por exemplo '120,00' ");
-		System.out.printf("\nPor fim, o valor da despesa R$: ");
-		BigDecimal valor = scanner.nextBigDecimal();
+		BigDecimal valor = null;
+		try {
+			System.out.printf("\nDICA: Ao digitar, separe o decimal com vírgula, por exemplo '120,00' ");
+			System.out.printf("\nPor fim, o valor da despesa R$: ");
+			valor = scanner.nextBigDecimal();
+		} catch (InputMismatchException e) {
+			System.err.printf("\nPara valores monetários, apenas números são permitidos.\n", scanner.next());
+			return null;
+		}
 
 		return new Despesa(nome, descricao, categoria, prioridade, valor);
 	}
