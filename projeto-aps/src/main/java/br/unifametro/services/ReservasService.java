@@ -1,5 +1,8 @@
 package br.unifametro.services;
 
+import static java.util.Optional.empty;
+
+import java.util.InputMismatchException;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Stream;
@@ -49,11 +52,20 @@ public class ReservasService implements Service<Reserva> {
 	public Optional<Reserva> get(Scanner scanner) {
 		if (fileNotExists() || nenhumAlunoCadastrado()) {
 			System.err.println("Nenhuma Reserva Cadastrada.");
-			return Optional.empty();
+			return empty();
 		}
-		System.out.printf("\nDigite o ID do Aluno que possui a reserva: ");
-		Integer alunoId = scanner.nextInt();
-		return dao.findAll().filter(r -> r.getAlunoId().equals(alunoId)).findFirst();
+
+		try {
+			System.out.printf("\nDigite o ID do Aluno que possui a reserva: ");
+			Integer alunoId = scanner.nextInt();
+			return dao.findAll().filter(r -> r.getAlunoId().equals(alunoId)).findFirst();
+
+		} catch (InputMismatchException e) {
+			System.err.printf("\nVocê digitou '%s', para o ID apenas números são permitidos.", scanner.next());
+			System.err.printf("\nTente novamente.\n");
+			return empty();
+		}
+
 	}
 
 	@Override

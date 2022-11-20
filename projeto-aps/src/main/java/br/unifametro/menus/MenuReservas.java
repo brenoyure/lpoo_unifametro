@@ -41,7 +41,7 @@ public final class MenuReservas {
 		try {
 			opcao = sc.nextInt();
 		} catch (InputMismatchException e) {
-			System.err.printf("Você digitou '%s', apenas números são permitidos.", sc.next());
+			System.err.printf("\nVocê digitou '%s', apenas números são permitidos.\n", sc.next());
 			exibirMenu(sc);
 		}
 
@@ -50,16 +50,16 @@ public final class MenuReservas {
 				servico.cadastrar(sc);
 				break;
 
-			case 3:
+			case 2:
 				servico.get(sc).ifPresentOrElse(System.out::println,
-						() -> System.err.println("Nenhuma Reserva com o ID do Aluno informado encontrada."));
+						() -> System.err.printf("\nNenhuma Reserva com o ID do Aluno informado encontrada.\n"));
 				break;
 
-			case 4:
+			case 3:
 				servico.listar();
 				break;
 
-			case 5:
+			case 4:
 				servico.excluir(sc);
 				break;
 
@@ -78,10 +78,9 @@ public final class MenuReservas {
 		System.out.println("\n####### Menu de Reservas #########");
 
 		System.out.printf("\n 1 - Cadastrar Nova Reserva.");
-		System.out.printf("\n 2 - Editar Reserva cadastrada.");
-		System.out.printf("\n 3 - Pesquisar Reserva por ID do Aluno.");
-		System.out.printf("\n 4 - Listar Reservas.");
-		System.out.printf("\n 5 - Excluir Reservas de um Aluno, por ID.");
+		System.out.printf("\n 2 - Pesquisar Reserva por ID do Aluno.");
+		System.out.printf("\n 3 - Listar Reservas.");
+		System.out.printf("\n 4 - Excluir Reservas de um Aluno, por ID.");
 		System.out.printf("\n 0 - Sair.");
 
 		System.out.printf("\nEscolha uma opção => ");

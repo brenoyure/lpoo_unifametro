@@ -2,7 +2,7 @@ Projeto Maven está utilizando a versão 17 LTS do JDK x64.
 
 Testado e Compatível com as versões 17 LTS do: 
 
-	*  Oracle Java JDK (Windows) ;
+	*  Oracle Java JDK (Windows);
 
 	*  OpenJDK (do Ubuntu openjdk-jdk-17-headless);
 
