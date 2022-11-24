@@ -4,6 +4,7 @@ import static java.lang.System.lineSeparator;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Locale.US;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Stream.empty;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -22,13 +23,14 @@ import java.util.stream.Stream;
 
 import br.unifametro.modelo.Aluno;
 import br.unifametro.persistencia.interfaces.DaoEditavel;
+import br.unifametro.persistencia.interfaces.DaoTXT;
 
 /**
  * Classe responsável pelas operações de IO com o arquivo de persistência.
  * 
  * @see br.unifametro.services.AlunoService
  */
-public class AlunoDao implements DaoEditavel<Aluno> {
+public class AlunoDao implements DaoEditavel<Aluno>, DaoTXT<Aluno> {
 
 	private static File file = new File("alunos.txt");
 
@@ -65,10 +67,10 @@ public class AlunoDao implements DaoEditavel<Aluno> {
 	@Override
 	public Stream<Aluno> findAll() {
 
-		Set<Aluno> alunos = new LinkedHashSet<>();
-
 		if (file.exists()) {
-
+			
+			Set<Aluno> alunos = new LinkedHashSet<>();
+			
 			try (Scanner sc = new Scanner(file, UTF_8)) {
 
 				while (sc.hasNext()) {
@@ -90,14 +92,17 @@ public class AlunoDao implements DaoEditavel<Aluno> {
 					}
 
 				}
+				
+				return alunos.stream();
 
 			} catch (IOException e) {
 				e.printStackTrace();
+				return empty();
 			}
 
 		}
 
-		return alunos.stream();
+		return empty();
 
 	}
 
@@ -146,12 +151,7 @@ public class AlunoDao implements DaoEditavel<Aluno> {
 	public String getFileName() {
 		return file.getName();
 	}
-
-	@Override
-	public boolean fileExists() {
-		return file.exists() && file.length() > 0;
-	}
-
+	
 	private Path getFilePath() {
 		return Paths.get(file.getPath());
 	}

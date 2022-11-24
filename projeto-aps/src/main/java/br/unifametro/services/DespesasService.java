@@ -84,7 +84,7 @@ public class DespesasService implements EditavelService<Despesa> {
 
 	@Override
 	public boolean fileNotExists() {
-		return !dao.fileExists();
+		return getAll().count() == 0;
 	}
 
 }

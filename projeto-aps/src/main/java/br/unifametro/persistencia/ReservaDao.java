@@ -1,6 +1,7 @@
 package br.unifametro.persistencia;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.stream.Stream.empty;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -9,19 +10,21 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import br.unifametro.modelo.Aluno;
 import br.unifametro.modelo.Reserva;
 import br.unifametro.persistencia.interfaces.Dao;
+import br.unifametro.persistencia.interfaces.DaoTXT;
 import br.unifametro.services.AlunoService;
 import br.unifametro.services.interfaces.Service;
 
-public class ReservaDao implements Dao<Reserva> {
+public class ReservaDao implements Dao<Reserva>, DaoTXT<Reserva> {
 
 	private final File file = new File(getFileName());
 	private final AlunoService alunoService;
@@ -66,9 +69,7 @@ public class ReservaDao implements Dao<Reserva> {
 	@Override
 	public Stream<Reserva> findAll() {
 
-		List<Reserva> reservas = new ArrayList<>();
-
-		if (fileExists()) {
+		Set<Reserva> reservas = new LinkedHashSet<>();
 
 			try (Scanner sc = new Scanner(file, UTF_8)) {
 				sc.useDelimiter(" ; ");
@@ -89,9 +90,9 @@ public class ReservaDao implements Dao<Reserva> {
 
 			} catch (IOException e) {
 				e.printStackTrace();
+				empty();
 			}
 
-		}
 
 		return reservas.stream();
 
@@ -102,10 +103,6 @@ public class ReservaDao implements Dao<Reserva> {
 		return getFileNameWithCurrentDate();
 	}
 
-	@Override
-	public boolean fileExists() {
-		return file.exists() && file.length() > 0;
-	}
 
 	/**
 	 * Método auxilar para gerar o nome do arquivo de persistência baseado no mês e
@@ -124,5 +121,6 @@ public class ReservaDao implements Dao<Reserva> {
 	private Path getFilePath() {
 		return Paths.get(file.getPath());
 	}
+
 
 }

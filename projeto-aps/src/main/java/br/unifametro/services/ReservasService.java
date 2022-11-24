@@ -86,7 +86,7 @@ public class ReservasService implements Service<Reserva> {
 
 	@Override
 	public boolean fileNotExists() {
-		return !dao.fileExists();
+		return dao.findAll().count() == 0;
 	}
 
 	private boolean nenhumAlunoCadastrado() {

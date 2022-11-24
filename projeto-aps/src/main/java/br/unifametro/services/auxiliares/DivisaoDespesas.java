@@ -25,6 +25,11 @@ public final class DivisaoDespesas {
 		this.alunosDao = new AlunoDao();
 		this.despesasDao = new DespesasDao();
 	}
+	
+	public DivisaoDespesas(Dao<Aluno> alunosDao, Dao<Despesa> despesasDao) {
+		this.alunosDao = alunosDao;
+		this.despesasDao = despesasDao;
+	}
 
 	/**
 	 * Calcula quanto cada um deve contribuir para cobrir as despesas do mês.
@@ -40,7 +45,7 @@ public final class DivisaoDespesas {
 	 */
 	public void resumir() {
 		
-		if (!despesasDao.fileExists()) {
+		if (despesasDao.findAll().count() == 0) {
 			System.err.println("Nenhuma Despesa cadastrada no mês atual.");
 			return;
 		}

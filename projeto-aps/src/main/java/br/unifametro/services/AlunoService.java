@@ -177,12 +177,12 @@ public class AlunoService implements EditavelService<Aluno> {
 			return;
 		}
 
-		alunoDao.findAll().forEach(System.out::println);
+		getAll().forEach(System.out::println);
 	}
 
 	@Override
 	public boolean fileNotExists() {
-		return !alunoDao.fileExists();
+		return getAll().count() == 0;
 
 	}
 

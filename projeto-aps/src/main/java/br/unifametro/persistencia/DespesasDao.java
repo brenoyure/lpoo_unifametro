@@ -24,13 +24,14 @@ import java.util.stream.Stream;
 import br.unifametro.modelo.Despesa;
 import br.unifametro.modelo.Prioridade;
 import br.unifametro.persistencia.interfaces.DaoEditavel;
+import br.unifametro.persistencia.interfaces.DaoTXT;
 
 /**
  * Classe responsável pelas operações de IO com o arquivo de persistência.
  * 
  * @see br.unifametro.services.DespesasService
  */
-public class DespesasDao implements DaoEditavel<Despesa> {
+public class DespesasDao implements DaoEditavel<Despesa>, DaoTXT<Despesa> {
 
 	private final File file = new File(getFileName());
 
@@ -150,7 +151,7 @@ public class DespesasDao implements DaoEditavel<Despesa> {
 		String fileName = getFileNameWithCurrentDate();
 		return fileName;
 	}
-
+	
 	/**
 	 * Método auxilar para gerar o nome do arquivo de persistência baseado no mês e
 	 * ano atual.
@@ -165,13 +166,9 @@ public class DespesasDao implements DaoEditavel<Despesa> {
 
 	}
 
-	@Override
-	public boolean fileExists() {
-		return file.exists() && file.length() > 0;
-	}
-
 	private Path getFilePath() {
 		return Paths.get(file.getPath());
 	}
+
 
 }
