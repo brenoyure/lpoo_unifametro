@@ -3,22 +3,25 @@ package br.unifametro.menus;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import br.unifametro.menus.interfaces.Menu;
 import br.unifametro.modelo.Despesa;
-import br.unifametro.persistencia.DespesasDao;
-import br.unifametro.services.DespesasService;
-import br.unifametro.services.auxiliares.DespesaPreencheDados;
 import br.unifametro.services.auxiliares.DivisaoDespesas;
 import br.unifametro.services.interfaces.EditavelService;
 
-public final class MenuDespesas {
+@Component
+public final class MenuDespesas implements Menu {
 
 	private final EditavelService<Despesa> servico;
 	private final DivisaoDespesas servicoDivisao;
 	private boolean ficarNesteMenu = true;
 
-	public MenuDespesas() {
-		this.servico = new DespesasService(new DespesasDao(), new DespesaPreencheDados());
-		this.servicoDivisao = new DivisaoDespesas();
+	@Autowired
+	public MenuDespesas(EditavelService<Despesa> servico, DivisaoDespesas servicoDivisao) {
+		this.servico = servico;
+		this.servicoDivisao = servicoDivisao;
 	}
 
 	public void exibirMenu(Scanner sc) {

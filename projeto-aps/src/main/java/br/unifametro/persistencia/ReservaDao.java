@@ -17,6 +17,8 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import br.unifametro.modelo.Aluno;
 import br.unifametro.modelo.Reserva;
 import br.unifametro.persistencia.interfaces.Dao;
@@ -24,11 +26,13 @@ import br.unifametro.persistencia.interfaces.DaoTXT;
 import br.unifametro.services.AlunoService;
 import br.unifametro.services.interfaces.Service;
 
+@org.springframework.stereotype.Service
 public class ReservaDao implements Dao<Reserva>, DaoTXT<Reserva> {
 
 	private final File file = new File(getFileName());
 	private final AlunoService alunoService;
 
+	@Autowired
 	public ReservaDao(Service<Aluno> alunoService) {
 		this.alunoService = (AlunoService) alunoService;
 	}

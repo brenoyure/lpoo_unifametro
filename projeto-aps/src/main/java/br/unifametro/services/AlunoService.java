@@ -7,29 +7,23 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import br.unifametro.modelo.Aluno;
-import br.unifametro.persistencia.AlunoDao;
 import br.unifametro.persistencia.interfaces.Dao;
 import br.unifametro.persistencia.interfaces.DaoEditavel;
-import br.unifametro.services.auxiliares.AlunoPreencheDados;
 import br.unifametro.services.interfaces.EditavelService;
+import br.unifametro.services.interfaces.auxiliares.BuscaBasicaService;
 import br.unifametro.services.interfaces.auxiliares.PreencheDadosComEdicao;
 
-public class AlunoService implements EditavelService<Aluno> {
+@Service
+public class AlunoService implements EditavelService<Aluno>, BuscaBasicaService<Aluno> {
 
 	private final DaoEditavel<Aluno> alunoDao;
 	private final PreencheDadosComEdicao<Aluno> dadosAluno;
 
-	public AlunoService() {
-		this.alunoDao = new AlunoDao();
-		this.dadosAluno = new AlunoPreencheDados();
-	}
-
-	public AlunoService(Dao<Aluno> alunoDao) {
-		this.alunoDao = (DaoEditavel<Aluno>) alunoDao;
-		this.dadosAluno = new AlunoPreencheDados();
-	}
-
+	@Autowired
 	public AlunoService(Dao<Aluno> alunoDao, PreencheDadosComEdicao<Aluno> novoAluno) {
 		this.alunoDao = (DaoEditavel<Aluno>) alunoDao;
 		this.dadosAluno = novoAluno;

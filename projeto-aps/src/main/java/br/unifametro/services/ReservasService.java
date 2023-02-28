@@ -7,16 +7,20 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import br.unifametro.modelo.Aluno;
 import br.unifametro.modelo.Reserva;
 import br.unifametro.persistencia.interfaces.Dao;
 import br.unifametro.services.interfaces.Service;
 
+@org.springframework.stereotype.Service
 public class ReservasService implements Service<Reserva> {
 
 	private final Dao<Reserva> dao;
 	private final Service<Aluno> alunoService;
 
+	@Autowired
 	public ReservasService(Dao<Reserva> reservaDao, Service<Aluno> alunoService) {
 		this.dao = reservaDao;
 		this.alunoService = alunoService;

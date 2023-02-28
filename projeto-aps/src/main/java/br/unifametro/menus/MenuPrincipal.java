@@ -3,20 +3,27 @@ package br.unifametro.menus;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public final class Menu {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-	private MenuAlunos alunos;
-	private MenuReservas reservas;
-	private MenuDespesas despesas;
+import br.unifametro.menus.interfaces.Menu;
+
+@Component
+public final class MenuPrincipal implements Menu {
+
+	private final MenuAlunos alunos;
+	private final MenuReservas reservas;
+	private final MenuDespesas despesas;
 	private boolean continuarNoAplicativo = true;
 
-	public Menu() {
-		this.alunos = new MenuAlunos();
-		this.reservas = new MenuReservas();
-		this.despesas = new MenuDespesas();
+	@Autowired
+	public MenuPrincipal(MenuAlunos alunos, MenuReservas reservas, MenuDespesas despesas) {
+		this.alunos = alunos;
+		this.reservas = reservas;
+		this.despesas = despesas;
 	}
 
-	public void exibir(Scanner scanner) {
+	public void exibirMenu(Scanner scanner) {
 		exibirDicas();
 		do {
 			exibirMenuPrincipal(scanner);

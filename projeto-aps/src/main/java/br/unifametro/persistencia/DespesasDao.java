@@ -21,6 +21,8 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.springframework.stereotype.Service;
+
 import br.unifametro.modelo.Despesa;
 import br.unifametro.modelo.Prioridade;
 import br.unifametro.persistencia.interfaces.DaoEditavel;
@@ -31,6 +33,7 @@ import br.unifametro.persistencia.interfaces.DaoTXT;
  * 
  * @see br.unifametro.services.DespesasService
  */
+@Service
 public class DespesasDao implements DaoEditavel<Despesa>, DaoTXT<Despesa> {
 
 	private final File file = new File(getFileName());

@@ -6,26 +6,22 @@ import static java.math.RoundingMode.HALF_UP;
 
 import java.math.BigDecimal;
 
+import org.springframework.stereotype.Service;
+
 import br.unifametro.modelo.Aluno;
 import br.unifametro.modelo.Despesa;
-import br.unifametro.persistencia.AlunoDao;
-import br.unifametro.persistencia.DespesasDao;
 import br.unifametro.persistencia.interfaces.Dao;
 
 /**
  * Responsável por calcular quanto cada aluno deve contribuir
  * para as Despesas do mês.
  */
+@Service
 public final class DivisaoDespesas {
 
 	private Dao<Aluno> alunosDao;
 	private Dao<Despesa> despesasDao;
 
-	public DivisaoDespesas() {
-		this.alunosDao = new AlunoDao();
-		this.despesasDao = new DespesasDao();
-	}
-	
 	public DivisaoDespesas(Dao<Aluno> alunosDao, Dao<Despesa> despesasDao) {
 		this.alunosDao = alunosDao;
 		this.despesasDao = despesasDao;

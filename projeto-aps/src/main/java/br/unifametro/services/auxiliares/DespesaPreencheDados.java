@@ -7,10 +7,13 @@ import java.math.BigDecimal;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import org.springframework.stereotype.Service;
+
 import br.unifametro.modelo.Despesa;
 import br.unifametro.modelo.Prioridade;
 import br.unifametro.services.interfaces.auxiliares.PreencheDados;
 
+@Service
 public class DespesaPreencheDados implements PreencheDados<Despesa> {
 
 	@Override

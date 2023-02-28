@@ -4,16 +4,21 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import br.unifametro.modelo.Despesa;
 import br.unifametro.persistencia.interfaces.DaoEditavel;
 import br.unifametro.services.interfaces.EditavelService;
 import br.unifametro.services.interfaces.auxiliares.PreencheDados;
 
+@Service
 public class DespesasService implements EditavelService<Despesa> {
 
 	private final DaoEditavel<Despesa> dao;
 	private final PreencheDados<Despesa> novaDespesa;
 
+	@Autowired
 	public DespesasService(DaoEditavel<Despesa> dao, PreencheDados<Despesa> novaDespesa) {
 		this.dao = dao;
 		this.novaDespesa = novaDespesa;

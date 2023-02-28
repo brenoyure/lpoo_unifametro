@@ -21,6 +21,8 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import org.springframework.stereotype.Service;
+
 import br.unifametro.modelo.Aluno;
 import br.unifametro.persistencia.interfaces.DaoEditavel;
 import br.unifametro.persistencia.interfaces.DaoTXT;
@@ -30,6 +32,7 @@ import br.unifametro.persistencia.interfaces.DaoTXT;
  * 
  * @see br.unifametro.services.AlunoService
  */
+@Service
 public class AlunoDao implements DaoEditavel<Aluno>, DaoTXT<Aluno> {
 
 	private static File file = new File("alunos.txt");

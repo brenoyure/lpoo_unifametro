@@ -3,16 +3,25 @@ package br.unifametro.menus;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import org.springframework.stereotype.Component;
+
+import br.unifametro.menus.interfaces.Menu;
+import br.unifametro.modelo.Aluno;
 import br.unifametro.services.AlunoService;
+import br.unifametro.services.interfaces.EditavelService;
+import br.unifametro.services.interfaces.auxiliares.BuscaBasicaService;
 
-public final class MenuAlunos {
+@Component
+public final class MenuAlunos implements Menu {
 
-	private final AlunoService servico;
+	private final EditavelService<Aluno> servico;
+	private final BuscaBasicaService<Aluno> buscaService;
 
 	private boolean ficarNesteMenu = true;
 
-	public MenuAlunos() {
-		this.servico = new AlunoService();
+	public MenuAlunos(AlunoService servico, BuscaBasicaService<Aluno> buscaService) {
+		this.servico = servico;
+		this.buscaService = buscaService;
 	}
 
 	public void exibirMenu(Scanner sc) {
@@ -50,7 +59,7 @@ public final class MenuAlunos {
 
 			case 4:
 				System.out.println("DICA: Começando com letra maiúscula, ");
-				servico.getByName(sc).forEach(System.out::println);
+				buscaService.getByName(sc).forEach(System.out::println);
 				break;
 
 			case 5:

@@ -1,20 +1,23 @@
 package br.unifametro.services.auxiliares;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import br.unifametro.modelo.Aluno;
-import br.unifametro.persistencia.AlunoDao;
 import br.unifametro.persistencia.interfaces.Dao;
 import br.unifametro.services.interfaces.auxiliares.ValidacaoDadosEditaveis;
 
+@Service
 public class AlunoValidaDados implements ValidacaoDadosEditaveis<Aluno> {
 
     private Dao<Aluno> alunoDao;
 
-    public AlunoValidaDados() {
-        if (alunoDao == null)
-            alunoDao = new AlunoDao();
-    }
+    @Autowired
+    public AlunoValidaDados(Dao<Aluno> alunoDao) {
+		this.alunoDao = alunoDao;
+	}
 
-    @Override
+	@Override
     public Aluno validar(Aluno aluno) {
         Integer id = aluno.getId();
         String nome = aluno.getNome();
