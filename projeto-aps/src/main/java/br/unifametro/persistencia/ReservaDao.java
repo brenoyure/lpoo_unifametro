@@ -22,12 +22,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import br.unifametro.modelo.Aluno;
 import br.unifametro.modelo.Reserva;
-import br.unifametro.persistencia.interfaces.Dao;
 import br.unifametro.persistencia.interfaces.DaoTXT;
 import br.unifametro.services.interfaces.auxiliares.BuscaBasicaService;
 
 @org.springframework.stereotype.Service
-public class ReservaDao implements Dao<Reserva>, DaoTXT<Reserva> {
+public class ReservaDao implements DaoTXT<Reserva> {
 
 	private final File file = new File(getFileName());
 	private final BuscaBasicaService<Aluno> buscaService;

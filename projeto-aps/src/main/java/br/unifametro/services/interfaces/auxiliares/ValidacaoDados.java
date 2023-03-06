@@ -1,6 +1,6 @@
 package br.unifametro.services.interfaces.auxiliares;
 
-import java.util.Optional;
+import br.unifametro.services.auxiliares.exceptions.validacoes.ValidationException;
 
 /**
  * Validação básica dos dados de um {@code <T>}.
@@ -23,6 +23,6 @@ public interface ValidacaoDados<T> {
      * </p>
      */
 
-	Optional<T> validar(T t);
+	T validar(T t) throws ValidationException;
 
 }

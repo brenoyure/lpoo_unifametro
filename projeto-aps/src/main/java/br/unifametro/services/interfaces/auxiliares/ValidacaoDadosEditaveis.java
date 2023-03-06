@@ -1,6 +1,6 @@
 package br.unifametro.services.interfaces.auxiliares;
 
-import java.util.Optional;
+import br.unifametro.services.auxiliares.exceptions.validacoes.ValidationException;
 
 /**
  * Validação de dados de um {@code <T>} editável.
@@ -25,6 +25,6 @@ public interface ValidacaoDadosEditaveis<T> extends ValidacaoDados<T> {
      * @param t
      * @return
      */
-	Optional<T> validarEdicao(T t);
+	T validarEdicao(T t) throws ValidationException;
 
 }

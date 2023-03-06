@@ -1,16 +1,11 @@
 package br.unifametro.services.auxiliares;
 
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
-import static java.util.Optional.ofNullable;
-
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.unifametro.modelo.Aluno;
 import br.unifametro.persistencia.interfaces.Dao;
+import br.unifametro.services.auxiliares.exceptions.validacoes.aluno.AlunoValidationException;
 import br.unifametro.services.interfaces.auxiliares.ValidacaoDadosEditaveis;
 
 @Service
@@ -24,38 +19,38 @@ public class AlunoValidaDados implements ValidacaoDadosEditaveis<Aluno> {
 	}
 
 	@Override
-    public Optional<Aluno> validar(Aluno aluno) {
+    public Aluno validar(Aluno aluno) throws AlunoValidationException {
         Integer id = aluno.getId();
         String nome = aluno.getNome();
         String email = aluno.getEmail();
 
         if (alunoJaExiste(id)) {
-            System.err.printf("\nJá existe um aluno com o ID informado. Cadastro não realizado.\n");
-            return empty();
+            throw new AlunoValidationException("\nJá existe um aluno com o ID informado. Cadastro não realizado.\n");
         }
 
         if (dadosInvalidos(nome, email)) {
-            System.err.println("\nNome ou Email estão em um formato inválido.");
-            System.out.println("Verifique se o nome começa com uma letra maiúscula e se o e-mail contém o @.");
-            return empty();
+        	StringBuilder sb = new StringBuilder("\nNome ou Email estão em um formato inválido.");
+        	sb.append("\nVerifique se o nome começa com uma letra maiúscula e se o e-mail contém o @.");
+            throw new AlunoValidationException(sb.toString());
         }
 
-        return ofNullable(aluno);
+        return aluno;
 
     }
-
+	
+	
     @Override
-    public Optional<Aluno> validarEdicao(Aluno aluno) {
+    public Aluno validarEdicao(Aluno aluno) throws AlunoValidationException {
         String nome = aluno.getNome();
         String email = aluno.getEmail();
 
         if (dadosInvalidos(nome, email)) {
-            System.err.println("\nNome ou Email estão em um formato inválido.");
-            System.out.println("Verifique se o Nome começa com uma letra maiúscula e/ou se o E-mail contém o @.");
-            return null;
+        	StringBuilder sb = new StringBuilder("\nNome ou Email estão em um formato inválido.");
+        	sb.append("\nVerifique se o nome começa com uma letra maiúscula e se o e-mail contém o @.");
+            throw new AlunoValidationException(sb.toString());
         }
 
-        return of(aluno);
+        return aluno;
     }
 
     private boolean alunoJaExiste(Integer id) {
