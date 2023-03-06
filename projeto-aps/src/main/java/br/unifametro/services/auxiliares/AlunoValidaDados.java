@@ -1,5 +1,11 @@
 package br.unifametro.services.auxiliares;
 
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
+
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,28 +24,28 @@ public class AlunoValidaDados implements ValidacaoDadosEditaveis<Aluno> {
 	}
 
 	@Override
-    public Aluno validar(Aluno aluno) {
+    public Optional<Aluno> validar(Aluno aluno) {
         Integer id = aluno.getId();
         String nome = aluno.getNome();
         String email = aluno.getEmail();
 
         if (alunoJaExiste(id)) {
             System.err.printf("\nJá existe um aluno com o ID informado. Cadastro não realizado.\n");
-            return null;
+            return empty();
         }
 
         if (dadosInvalidos(nome, email)) {
             System.err.println("\nNome ou Email estão em um formato inválido.");
             System.out.println("Verifique se o nome começa com uma letra maiúscula e se o e-mail contém o @.");
-            return null;
+            return empty();
         }
 
-        return aluno;
+        return ofNullable(aluno);
 
     }
 
     @Override
-    public Aluno validarEdicao(Aluno aluno) {
+    public Optional<Aluno> validarEdicao(Aluno aluno) {
         String nome = aluno.getNome();
         String email = aluno.getEmail();
 
@@ -49,7 +55,7 @@ public class AlunoValidaDados implements ValidacaoDadosEditaveis<Aluno> {
             return null;
         }
 
-        return aluno;
+        return of(aluno);
     }
 
     private boolean alunoJaExiste(Integer id) {

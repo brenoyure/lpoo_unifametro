@@ -2,9 +2,11 @@ package br.unifametro.services.auxiliares;
 
 import static br.unifametro.modelo.Prioridade.values;
 import static java.lang.Math.abs;
+import static java.util.Optional.ofNullable;
 
 import java.math.BigDecimal;
 import java.util.InputMismatchException;
+import java.util.Optional;
 import java.util.Scanner;
 
 import org.springframework.stereotype.Service;
@@ -17,7 +19,7 @@ import br.unifametro.services.interfaces.auxiliares.PreencheDados;
 public class DespesaPreencheDados implements PreencheDados<Despesa> {
 
 	@Override
-	public Despesa getDados(Scanner scanner) {
+	public Optional<Despesa> getDados(Scanner scanner) {
 		if (scanner.nextLine() != "")
 			scanner.nextLine();
 
@@ -62,7 +64,7 @@ public class DespesaPreencheDados implements PreencheDados<Despesa> {
 			return null;
 		}
 
-		return new Despesa(nome, descricao, categoria, prioridade, valor);
+		return ofNullable(new Despesa(nome, descricao, categoria, prioridade, valor));
 	}
 
 	private String exibePrioridades() {

@@ -4,6 +4,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.stream.Stream.empty;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,18 +24,17 @@ import br.unifametro.modelo.Aluno;
 import br.unifametro.modelo.Reserva;
 import br.unifametro.persistencia.interfaces.Dao;
 import br.unifametro.persistencia.interfaces.DaoTXT;
-import br.unifametro.services.AlunoService;
-import br.unifametro.services.interfaces.Service;
+import br.unifametro.services.interfaces.auxiliares.BuscaBasicaService;
 
 @org.springframework.stereotype.Service
 public class ReservaDao implements Dao<Reserva>, DaoTXT<Reserva> {
 
 	private final File file = new File(getFileName());
-	private final AlunoService alunoService;
+	private final BuscaBasicaService<Aluno> buscaService;
 
 	@Autowired
-	public ReservaDao(Service<Aluno> alunoService) {
-		this.alunoService = (AlunoService) alunoService;
+	public ReservaDao(BuscaBasicaService<Aluno> buscaService) {
+		this.buscaService = buscaService;
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class ReservaDao implements Dao<Reserva>, DaoTXT<Reserva> {
 
 				while (sc.hasNext()) {
 
-					Aluno aluno = alunoService.getById(sc.nextInt()).get();
+					Aluno aluno = buscaService.getById(sc.nextInt()).get();
 					Reserva reserva = new Reserva(aluno);
 					reservas.add(reserva);
 
@@ -92,7 +92,10 @@ public class ReservaDao implements Dao<Reserva>, DaoTXT<Reserva> {
 				System.err.println(
 						"Possível erro nos campos numéricos, favor verificar no txt de reservas, se a matrícula de algum aluno está incorreta.");
 
-			} catch (IOException e) {
+			} catch (FileNotFoundException e) {
+				return empty();
+				
+			}catch (IOException e) {
 				e.printStackTrace();
 				empty();
 			}

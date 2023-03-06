@@ -1,5 +1,7 @@
 package br.unifametro.services.interfaces.auxiliares;
 
+import java.util.Optional;
+
 /**
  * Validação básica dos dados de um {@code <T>}.
  * 
@@ -17,10 +19,10 @@ public interface ValidacaoDados<T> {
      * </p>
      * 
      * <p>
-     * Retorna um Null caso algum atributo não seja válido.
+     * Retorna um {@code Optional} vazio caso algum atributo não seja válido.
      * </p>
      */
 
-    T validar(T t);
+	Optional<T> validar(T t);
 
 }

@@ -7,6 +7,7 @@ import java.util.stream.Stream;
 public interface BuscaBasicaService<T> {
 
 	Stream<T> getByName(Scanner scanner);
+
 	Optional<T> getById(Integer id);
-	
+
 }

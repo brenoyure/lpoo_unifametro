@@ -26,10 +26,7 @@ public class DespesasService implements EditavelService<Despesa> {
 
 	@Override
 	public void cadastrar(Scanner scanner) {
-		Despesa despesa = novaDespesa.getDados(scanner);
-		if (despesa == null)
-			return;
-		dao.salvar(despesa);
+		novaDespesa.getDados(scanner).ifPresent(d -> dao.salvar(d));
 	}
 
 	@Override
@@ -48,7 +45,7 @@ public class DespesasService implements EditavelService<Despesa> {
 
 	@Override
 	public void listar() {
-		if (fileNotExists()) {
+		if (nenhumCadastro()) {
 			System.err.println("Nenhuma despesa cadastrada.");
 			return;
 		}
@@ -58,37 +55,36 @@ public class DespesasService implements EditavelService<Despesa> {
 
 	@Override
 	public void editar(Scanner scanner) {
-
-		if (fileNotExists()) {
+		if (nenhumCadastro()) {
 			System.err.println("Nenhuma despesa cadastrada.");
 			return;
 		}
 
-		Optional<Despesa> despesa = get(scanner);
+		get(scanner).ifPresentOrElse(despesa -> getNovosDadosESalvar(despesa, scanner),
+				() -> System.err.println("Despesa com o nome informado não encontrada."));
 
-		if (despesa.isEmpty()) {
-			System.err.println("Despesa com o Nome informado não encontrada.");
-			return;
-		}
+	}
 
-		System.out.printf("Editando dados de: %s\n", despesa.get());
-		dao.editar(despesa.get(), novaDespesa.getDados(scanner));
+	private void getNovosDadosESalvar(Despesa dadosAntigos, Scanner scanner) {
+		System.out.printf("Editando dados de: %s", dadosAntigos);
+		novaDespesa.getDados(scanner).ifPresent(novosDados -> dao.editar(dadosAntigos, novosDados));
 
 	}
 
 	@Override
 	public void excluir(Scanner scanner) {
-		if (fileNotExists()) {
+		if (nenhumCadastro()) {
 			System.err.println("Nenhuma despesa cadastrada.");
 			return;
 		}
 
-		get(scanner).ifPresentOrElse(d -> dao.excluir(d), () -> System.err.println("Despesa não encontrada."));
+		get(scanner).ifPresentOrElse(d -> dao.excluir(d), 
+				() -> System.err.println("Despesa não encontrada."));
 
 	}
 
 	@Override
-	public boolean fileNotExists() {
+	public boolean nenhumCadastro() {
 		return getAll().count() == 0;
 	}
 

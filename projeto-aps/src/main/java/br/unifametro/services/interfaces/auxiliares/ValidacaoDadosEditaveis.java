@@ -1,5 +1,7 @@
 package br.unifametro.services.interfaces.auxiliares;
 
+import java.util.Optional;
+
 /**
  * Validação de dados de um {@code <T>} editável.
  * 
@@ -17,12 +19,12 @@ public interface ValidacaoDadosEditaveis<T> extends ValidacaoDados<T> {
      * </p>
      * 
      * <p>
-     * Retorna um Null caso algum atributo não seja válido.
+     * Retorna um {@code Optional} vazio caso algum atributo não seja válido.
      * </p>
      * 
      * @param t
      * @return
      */
-    T validarEdicao(T t);
+	Optional<T> validarEdicao(T t);
 
 }

@@ -6,7 +6,11 @@ import br.unifametro.modelo.Aluno;
 import br.unifametro.persistencia.AlunoDao;
 import br.unifametro.persistencia.interfaces.Dao;
 import br.unifametro.services.AlunoService;
+import br.unifametro.services.auxiliares.AlunoPreencheDados;
+import br.unifametro.services.auxiliares.AlunoValidaDados;
 import br.unifametro.services.interfaces.Service;
+import br.unifametro.services.interfaces.auxiliares.PreencheDadosComEdicao;
+import br.unifametro.services.interfaces.auxiliares.ValidacaoDadosEditaveis;
 
 public class CadastroAlunos {
 
@@ -14,7 +18,10 @@ public class CadastroAlunos {
 
 		try (Scanner scanner = new Scanner(System.in)) {
 			Dao<Aluno> dao = new AlunoDao();
-			Service<Aluno> servicoDeAlunos = new AlunoService(dao);
+			ValidacaoDadosEditaveis<Aluno> validacao = new AlunoValidaDados(dao);
+			PreencheDadosComEdicao<Aluno> getDados = new AlunoPreencheDados(validacao);
+			
+			Service<Aluno> servicoDeAlunos = new AlunoService(dao, getDados);
 			servicoDeAlunos.cadastrar(scanner);
 
 		}

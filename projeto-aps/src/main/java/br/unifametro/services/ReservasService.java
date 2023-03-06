@@ -34,15 +34,14 @@ public class ReservasService implements Service<Reserva> {
 			return;
 		}
 
-		Optional<Aluno> aluno = alunoService.get(scanner);
-		aluno.ifPresentOrElse(r -> dao.salvar(new Reserva(aluno.get())),
-				() -> System.err.println("Nenhum aluno com o ID informado encontrado."));
-
+		alunoService.get(scanner).ifPresentOrElse(aluno -> dao.salvar(new Reserva(aluno)), 
+				() -> System.err.println("Aluno com o ID informado encontrado."));
+		
 	}
 
 	@Override
 	public void excluir(Scanner scanner) {
-		if (fileNotExists()) {
+		if (nenhumCadastro()) {
 			System.err.println("Nenhuma Reserva Cadastrada.");
 			return;
 		}
@@ -54,7 +53,7 @@ public class ReservasService implements Service<Reserva> {
 
 	@Override
 	public Optional<Reserva> get(Scanner scanner) {
-		if (fileNotExists() || nenhumAlunoCadastrado()) {
+		if (nenhumCadastro() || nenhumAlunoCadastrado()) {
 			System.err.println("Nenhuma Reserva Cadastrada.");
 			return empty();
 		}
@@ -79,7 +78,7 @@ public class ReservasService implements Service<Reserva> {
 
 	@Override
 	public void listar() {
-		if (fileNotExists()) {
+		if (nenhumCadastro()) {
 			System.err.println("Nenhuma Reserva cadastrada.");
 			return;
 		}
@@ -89,12 +88,12 @@ public class ReservasService implements Service<Reserva> {
 	}
 
 	@Override
-	public boolean fileNotExists() {
+	public boolean nenhumCadastro() {
 		return dao.findAll().count() == 0;
 	}
 
 	private boolean nenhumAlunoCadastrado() {
-		return alunoService.fileNotExists();
+		return alunoService.nenhumCadastro();
 	}
 
 }

@@ -10,14 +10,20 @@ import br.unifametro.persistencia.AlunoDao;
 import br.unifametro.persistencia.ReservaDao;
 import br.unifametro.persistencia.interfaces.Dao;
 import br.unifametro.services.AlunoService;
-import br.unifametro.services.interfaces.Service;
+import br.unifametro.services.auxiliares.AlunoPreencheDados;
+import br.unifametro.services.auxiliares.AlunoValidaDados;
+import br.unifametro.services.interfaces.auxiliares.BuscaBasicaService;
+import br.unifametro.services.interfaces.auxiliares.PreencheDadosComEdicao;
+import br.unifametro.services.interfaces.auxiliares.ValidacaoDadosEditaveis;
 
 public class Relatorio {
 
 	public static void main(String[] args) {
 
 		Dao<Aluno> alunosDao = new AlunoDao();
-		Service<Aluno> alunoService = new AlunoService();
+		ValidacaoDadosEditaveis<Aluno> validacao = new AlunoValidaDados(alunosDao);
+		PreencheDadosComEdicao<Aluno> getDados = new AlunoPreencheDados(validacao);
+		BuscaBasicaService<Aluno> alunoService = new AlunoService(alunosDao, getDados);
 		Dao<Reserva> reservasDao = new ReservaDao(alunoService);
 
 		List<Aluno> alunos = alunosDao.findAll().collect(toList());

@@ -16,7 +16,7 @@ public class ExcluirReservas {
 
         Scanner sc = new Scanner(System.in);
         AlunoDao alunoDao = new AlunoDao();
-        AlunoService alunoService = new AlunoService(alunoDao);
+        AlunoService alunoService = new AlunoService(alunoDao, null);
         Dao<Reserva> reservaDao = new ReservaDao(alunoService);
 
         Service<Reserva> service = new ReservasService(reservaDao, alunoService);

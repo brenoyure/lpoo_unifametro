@@ -31,41 +31,38 @@ public class AlunoService implements EditavelService<Aluno>, BuscaBasicaService<
 
 	@Override
 	public void cadastrar(Scanner scanner) {
-		Aluno dadosNovoAluno = dadosAluno.getDados(scanner);
-		if (dadosNovoAluno == null)
-			return;
-		alunoDao.salvar(dadosNovoAluno);
+		dadosAluno.getDados(scanner).ifPresent(a -> alunoDao.salvar(a));
 	}
 
 	@Override
 	public void editar(Scanner scanner) {
-		if (fileNotExists()) {
+		if (nenhumCadastro()) {
 			System.err.println("Nenhum Aluno Cadastrado.");
 			return;
 		}
-		Optional<Aluno> aluno = get(scanner);
-		if (aluno.isEmpty()) {
-			System.err.println("Aluno com o ID informado não encontrado.");
-			return;
-		}
+		
+		get(scanner).ifPresentOrElse(a -> getNovosDadosESalvar(a, scanner), 
+				() -> System.err.println("Aluno com o ID informado não encontrado."));
+		
+	}
 
-		System.out.printf("Editando dados de: %s", aluno.get());
-		Aluno novosDados = dadosAluno.getDadosEdicao(scanner);
-
-		if (novosDados == null)
-			return;
-
-		novosDados.setId(aluno.get().getId());
-		alunoDao.editar(aluno.get(), novosDados);
-
+	private void getNovosDadosESalvar(Aluno dadosAntigos, Scanner scanner) {
+		System.out.printf("Editando dados de: %s", dadosAntigos);
+		dadosAluno.getDadosEdicao(scanner).ifPresent(
+				novosDados -> {
+					novosDados.setId(dadosAntigos.getId());
+						alunoDao.editar(dadosAntigos, novosDados);
+		});
+		
 	}
 
 	@Override
 	public void excluir(Scanner scanner) {
-		if (fileNotExists()) {
+		if (nenhumCadastro()) {
 			System.err.println("Nenhum Aluno Cadastrado.");
 			return;
 		}
+		
 		System.out.printf("Para excluir, ");
 		get(scanner).ifPresentOrElse(a -> alunoDao.excluir(a),
 				() -> System.err.println("Aluno com o ID informado não encontrado."));
@@ -79,7 +76,7 @@ public class AlunoService implements EditavelService<Aluno>, BuscaBasicaService<
 	 * @return Optional de Aluno
 	 */
 	public Optional<Aluno> get(Scanner scanner) {
-		if (fileNotExists()) {
+		if (nenhumCadastro()) {
 			System.err.println("Nenhum Aluno Cadastrado.");
 			return Optional.empty();
 		}
@@ -87,7 +84,7 @@ public class AlunoService implements EditavelService<Aluno>, BuscaBasicaService<
 		try {
 			System.out.printf("Digite o ID do Aluno: ");
 			Integer id = scanner.nextInt();
-			return alunoDao.findAll().filter(a -> a.getId().equals(id)).findFirst();
+			return getById(id);
 
 		} catch (InputMismatchException e) {
 			System.err.printf("\nVocê digitou '%s', para o ID apenas números são permitidos.\n", scanner.next());
@@ -97,11 +94,13 @@ public class AlunoService implements EditavelService<Aluno>, BuscaBasicaService<
 
 	}
 
+	@Override
 	public Optional<Aluno> getById(Integer id) {
-		if (fileNotExists()) {
+		if (nenhumCadastro()) {
 			System.err.println("Nenhum Aluno Cadastrado.");
 			return Optional.empty();
 		}
+		
 		return alunoDao.findAll().filter(a -> a.getId().equals(id)).findFirst();
 	}
 
@@ -136,7 +135,7 @@ public class AlunoService implements EditavelService<Aluno>, BuscaBasicaService<
 	 */
 	public Stream<Aluno> getByName(Scanner scanner) {
 
-		if (fileNotExists()) {
+		if (nenhumCadastro()) {
 			System.err.println("Nenhum Aluno Cadastrado.");
 			return empty();
 		}
@@ -166,7 +165,7 @@ public class AlunoService implements EditavelService<Aluno>, BuscaBasicaService<
 
 	@Override
 	public void listar() {
-		if (fileNotExists()) {
+		if (nenhumCadastro()) {
 			System.err.println("Nenhum Aluno Cadastrado.");
 			return;
 		}
@@ -175,7 +174,7 @@ public class AlunoService implements EditavelService<Aluno>, BuscaBasicaService<
 	}
 
 	@Override
-	public boolean fileNotExists() {
+	public boolean nenhumCadastro() {
 		return getAll().count() == 0;
 
 	}

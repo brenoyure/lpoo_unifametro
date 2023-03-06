@@ -7,12 +7,13 @@ import java.util.stream.Stream;
 
 import br.unifametro.modelo.Aluno;
 import br.unifametro.persistencia.AlunoDao;
+import br.unifametro.persistencia.interfaces.Dao;
 
 public class ListagemAlunosComFiltro {
 
 	public static void main(String[] args) throws IOException {
 
-		AlunoDao dao = new AlunoDao();
+		Dao<Aluno> dao = new AlunoDao();
 		Stream<Aluno> alunos = dao.findAll();
 
 		BigDecimal comparador = new BigDecimal("2000");

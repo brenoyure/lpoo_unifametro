@@ -4,6 +4,7 @@ import static java.lang.Math.abs;
 
 import java.math.BigDecimal;
 import java.util.InputMismatchException;
+import java.util.Optional;
 import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class AlunoPreencheDados implements PreencheDadosComEdicao<Aluno> {
 	}
 
 	@Override
-	public Aluno getDados(Scanner keyboardInput) {
+	public Optional<Aluno> getDados(Scanner keyboardInput) {
 
 		Integer id = null;
 		String nome = null;
@@ -37,7 +38,7 @@ public class AlunoPreencheDados implements PreencheDadosComEdicao<Aluno> {
 		} catch (InputMismatchException e) {
 			System.err.printf("\nVocê digitou '%s', para o ID apenas números são permitidos.\n", keyboardInput.next());
 			System.err.printf("\nTente novamente.\n");
-			return null;
+			return Optional.empty();
 
 		}
 
@@ -58,7 +59,7 @@ public class AlunoPreencheDados implements PreencheDadosComEdicao<Aluno> {
 		} catch (InputMismatchException e) {
 			System.err.printf("\nPara valores monetários, apenas números são permitidos.\n", keyboardInput.next());
 			System.err.printf("\nTente novamente.\n");
-			return null;
+			return Optional.empty();
 
 		}
 
@@ -66,7 +67,7 @@ public class AlunoPreencheDados implements PreencheDadosComEdicao<Aluno> {
 	}
 
 	@Override
-	public Aluno getDadosEdicao(Scanner keyboardInput) {
+	public Optional<Aluno> getDadosEdicao(Scanner keyboardInput) {
 		if (keyboardInput.nextLine() != "")
 			keyboardInput.nextLine();
 		System.out.print("\nDigite o nome do Aluno: ");

@@ -56,6 +56,6 @@ public interface Service<T> {
 	 * </p>
 	 * @return verdadeiro caso o arquivo de persistência da Dao{@code <T>} não exista.
 	 */
-	boolean fileNotExists();
+	boolean nenhumCadastro();
 
 }

@@ -1,0 +1,4 @@
+Luz ; Conta de Luz ; FIXA MENSAL ; URGENTE ; 160.00
+Internet ; 4G dados móvies TIM ; FIXA MENSAL ; ALTA ; 59.00
+Água ; Conta de Água da República ; FIXA MENSAL ; ALTA ; 100.00
+Manutenção 1 ; Manutenção do Choveiro Elétrico ; VARIADA ; ALTA ; 72.00

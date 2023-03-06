@@ -15,7 +15,7 @@ public class CadastroReserva {
 	public static void main(String[] args) {
 
 		Scanner sc = new Scanner(System.in);
-		AlunoService alunoServices = new AlunoService(new AlunoDao());
+		AlunoService alunoServices = new AlunoService(new AlunoDao(), null);
 		Dao<Reserva> reservasDao = new ReservaDao(alunoServices);
 		Service<Reserva> service = new ReservasService(reservasDao, alunoServices);
 		service.cadastrar(sc);
