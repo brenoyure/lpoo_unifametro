@@ -27,8 +27,6 @@ public interface DaoTXT<T> extends Dao<T> {
 	 * @return Verdadeiro, por exemplo caso o arquivo exista e seu {@code length} seja maior que ZERO.
 	 */
 	default boolean fileExists() {
-		//TODO ajeitar a implementação default
-		//Nome deve ficar isEmpty e retornar Stream count == 0.
 		return findAll().count() > 0;
 	}
 	

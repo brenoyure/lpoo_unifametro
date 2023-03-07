@@ -7,10 +7,10 @@ import br.unifametro.persistencia.AlunoDao;
 import br.unifametro.persistencia.interfaces.Dao;
 import br.unifametro.services.AlunoService;
 import br.unifametro.services.auxiliares.AlunoPreencheDados;
-import br.unifametro.services.auxiliares.AlunoValidaDados;
+import br.unifametro.services.auxiliares.validacoes.AlunoValidaDados;
 import br.unifametro.services.interfaces.Service;
 import br.unifametro.services.interfaces.auxiliares.PreencheDadosComEdicao;
-import br.unifametro.services.interfaces.auxiliares.ValidacaoDadosEditaveis;
+import br.unifametro.services.interfaces.auxiliares.validacoes.ValidacaoDadosEditaveis;
 
 public class CadastroAlunos {
 

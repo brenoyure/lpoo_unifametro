@@ -1,8 +1,6 @@
 package br.unifametro.services.auxiliares;
 
 import static java.lang.Math.abs;
-import static java.util.Optional.empty;
-import static java.util.Optional.ofNullable;
 
 import java.math.BigDecimal;
 import java.util.InputMismatchException;
@@ -13,9 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.unifametro.modelo.Aluno;
-import br.unifametro.services.auxiliares.exceptions.validacoes.ValidationException;
 import br.unifametro.services.interfaces.auxiliares.PreencheDadosComEdicao;
-import br.unifametro.services.interfaces.auxiliares.ValidacaoDadosEditaveis;
+import br.unifametro.services.interfaces.auxiliares.validacoes.ValidacaoDadosEditaveis;
 
 @Service
 public class AlunoPreencheDados implements PreencheDadosComEdicao<Aluno> {
@@ -66,14 +63,7 @@ public class AlunoPreencheDados implements PreencheDadosComEdicao<Aluno> {
 
 		}
 
-		try {
-
-			return ofNullable(validacoes.validar(new Aluno(id, nome, email, rendimentos)));
-
-		} catch (ValidationException e) {
-			System.err.println(e.getLocalizedMessage());
-			return empty();
-		}
+		return validacoes.validar(new Aluno(id, nome, email, rendimentos));
 
 	}
 
@@ -90,14 +80,7 @@ public class AlunoPreencheDados implements PreencheDadosComEdicao<Aluno> {
 		System.out.print("\nPor fim, o total de rendimentos: R$");
 		BigDecimal rendimentos = keyboardInput.nextBigDecimal();
 
-		try {
-
-			return ofNullable(validacoes.validarEdicao(new Aluno(nome, email, rendimentos)));
-
-		} catch (ValidationException e) {
-			System.err.println(e.getLocalizedMessage());
-			return empty();
-		}
+		return validacoes.validarEdicao(new Aluno(nome, email, rendimentos));
 
 	}
 
